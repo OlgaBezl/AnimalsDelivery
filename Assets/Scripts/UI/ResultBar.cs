@@ -1,42 +1,41 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Scripts.Progress;
 
-public class ResultBar : MonoBehaviour
+namespace Scripts.UI
 {
-    [SerializeField] private Result _result;
-    [SerializeField] private TMPro.TextMeshProUGUI _text;
-    [SerializeField] private Slider _slider;
-
-    private void OnValidate()
+    public class ResultBar : MonoBehaviour
     {
-        if(_result == null)
-            throw new System.NullReferenceException(nameof(_result));
+        [SerializeField] private Result _result;
+        [SerializeField] private TMPro.TextMeshProUGUI _text;
+        [SerializeField] private Slider _slider;
 
-        if (_text == null)
-            throw new System.NullReferenceException(nameof(_text));
+        private void OnValidate()
+        {
+            if (_result == null)
+                throw new System.NullReferenceException(nameof(_result));
 
-        if (_slider == null)
-            throw new System.NullReferenceException(nameof(_slider));
-    }
+            if (_text == null)
+                throw new System.NullReferenceException(nameof(_text));
 
-    private void OnEnable()
-    {
-        _result.CurrentPercentChanged += ResultChanged;
-    }
+            if (_slider == null)
+                throw new System.NullReferenceException(nameof(_slider));
+        }
 
-    private void OnDisable()
-    {
-        _result.CurrentPercentChanged -= ResultChanged;
-    }
+        private void OnEnable()
+        {
+            _result.CurrentPercentChanged += ResultChanged;
+        }
 
-    private void OnDestroy()
-    {
-        //to do
-    }
+        private void OnDisable()
+        {
+            _result.CurrentPercentChanged -= ResultChanged;
+        }
 
-    private void ResultChanged(int percent)
-    {
-        _slider.value = percent;
-        _text.text = $"{percent}%";
+        private void ResultChanged(int percent)
+        {
+            _slider.value = percent;
+            _text.text = $"{percent}%";
+        }
     }
 }

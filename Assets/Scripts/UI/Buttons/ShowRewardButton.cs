@@ -1,22 +1,26 @@
-using YG;
 using System;
+using Scripts.Helpers;
+using YG;
 
-public class ShowRewardButton : DefaultButton
+namespace Scripts.UI.Buttons
 {
-    public event Action<int> IsShown;
-
-    protected override void OnClick()
+    public class ShowRewardButton : DefaultButton
     {
-        YandexGame.RewVideoShow((int)RewardType.UnlockParkingPlace);
-        YandexGame.RewardVideoEvent += AfterReward;
-    }
+        public event Action<int> IsShown;
 
-    private void AfterReward(int id)
-    {
-        if (id != (int)RewardType.UnlockParkingPlace)
-            return;
+        protected override void OnClick()
+        {
+            YandexGame.RewVideoShow((int)RewardType.UnlockParkingPlace);
+            YandexGame.RewardVideoEvent += AfterReward;
+        }
 
-        YandexGame.RewardVideoEvent -= AfterReward;
-        IsShown?.Invoke(id);
+        private void AfterReward(int id)
+        {
+            if (id != (int)RewardType.UnlockParkingPlace)
+                return;
+
+            YandexGame.RewardVideoEvent -= AfterReward;
+            IsShown?.Invoke(id);
+        }
     }
 }

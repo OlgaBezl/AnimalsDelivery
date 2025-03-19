@@ -1,19 +1,24 @@
 using System;
 using UnityEngine;
 using YG;
+using Scripts.UI.Panels;
+using Scripts.Progress;
 
-public class NextLevelButton : DefaultButton
+namespace Scripts.UI.Buttons
 {
-    [SerializeField] private UIPanel _panel;
-
-    public event Action<LevelInfo> Click;
-
-    protected override void OnClick()
+    public class NextLevelButton : DefaultButton
     {
-        base.OnClick();
+        [SerializeField] private UIPanel _panel;
 
-        Click?.Invoke(YandexGame.savesData.CurrentLevel);
-        _panel.Hide();
-        Time.timeScale = 1;
+        public event Action<LevelInfo> Click;
+
+        protected override void OnClick()
+        {
+            base.OnClick();
+
+            Click?.Invoke(YandexGame.savesData.CurrentLevel);
+            _panel.Hide();
+            Time.timeScale = 1;
+        }
     }
 }

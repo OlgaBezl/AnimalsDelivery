@@ -1,13 +1,14 @@
-using System;
 using UnityEngine;
-using YG;
 
-public class StartButton : CommonStartButton
+namespace Scripts.UI.Buttons
 {
-    protected override void OnClick()
+    public class StartButton : CommonStartButton
     {
-        base.OnClick();
-        Panel.Hide();
-        Time.timeScale = 1;
+        protected override void OnClick()
+        {
+            base.OnClick();
+            Panel.Hide();
+            Time.timeScale = 1;
+        }
     }
 }

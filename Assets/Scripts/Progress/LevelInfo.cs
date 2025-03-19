@@ -1,104 +1,105 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using YG;
+using Scripts.Enviroment;
 
-[Serializable]
-public class LevelInfo
+namespace Scripts.Progress
 {
-    public int LevelNumber{get;private set;}
-    public BiomType Biom { get; private set; }
-    public int Points { get; private set; }
-    public int StarsCount { get; private set; }
-    public bool IsEnabled { get; private set; }
-    public int UserPoints { get; private set; }
-
-    private int _biomStep = 3;
-    private string _leaderboardName = "AnimalDeliveryLeaderboard";
-
-    public LevelInfo(int levelNumber, int points, int userPoints)
+    public class LevelInfo
     {
-        LevelNumber = levelNumber;
-        Points = points;
-        UserPoints = userPoints;
+        private int _biomStep = 3;
+        private string _leaderboardName = "AnimalDeliveryLeaderboard";
 
-        Biom = GetBiom();
-        StarsCount = GetStarCount(UserPoints);
-        IsEnabled = GetEnabled();
-    }
+        public int LevelNumber { get; private set; }
+        public BiomType Biom { get; private set; }
+        public int Points { get; private set; }
+        public int StarsCount { get; private set; }
+        public bool IsEnabled { get; private set; }
+        public int UserPoints { get; private set; }
 
-    public void TryUpdateResult(int userPoints)
-    {
-        if (UserPoints > userPoints)
-            return;
+        public LevelInfo(int levelNumber, int points, int userPoints)
+        {
+            LevelNumber = levelNumber;
+            Points = points;
+            UserPoints = userPoints;
 
-        UserPoints = userPoints;
-        StarsCount = GetStarCount(UserPoints);
+            Biom = GetBiom();
+            StarsCount = GetStarCount(UserPoints);
+            IsEnabled = GetEnabled();
+        }
 
-        int totalScore = YandexGame.savesData.UserPoints.Sum();
-        Save();
-        SaveLeaderboardScores();
-        YandexGame.savesData.UpdateCurrentLevel(this);
-    }
+        public void TryUpdateResult(int userPoints)
+        {
+            if (UserPoints > userPoints)
+                return;
 
-    public void ActivateCurrentLevel()
-    {
-        IsEnabled = true;
-        YandexGame.savesData.UpdateCurrentLevel(this);
-    }
+            UserPoints = userPoints;
+            StarsCount = GetStarCount(UserPoints);
 
-    private void Save()
-    {
-        if (LevelNumber < 1)
-            return;
+            Save();
+            SaveLeaderboardScores();
+            YandexGame.savesData.UpdateCurrentLevel(this);
+        }
 
-        YandexGame.savesData.UserPoints[LevelNumber - 1] = UserPoints;
-        YandexGame.SaveProgress();
-    }
+        public void ActivateCurrentLevel()
+        {
+            IsEnabled = true;
+            YandexGame.savesData.UpdateCurrentLevel(this);
+        }
 
-    private void SaveLeaderboardScores()
-    {
-        int totalScore = YandexGame.savesData.UserPoints.Sum();
-        Debug.Log($"SAVE totalScore {totalScore}");
-        YandexGame.NewLeaderboardScores(_leaderboardName, totalScore);
-    }
+        private void Save()
+        {
+            if (LevelNumber < 1)
+                return;
 
-    private BiomType GetBiom()
-    {
-       int groupNumber = (LevelNumber - 1) / _biomStep;
+            YandexGame.savesData.UserPoints[LevelNumber - 1] = UserPoints;
+            YandexGame.SaveProgress();
+        }
 
-        var biomCount = Enum.GetNames(typeof(BiomType)).Length;
+        private void SaveLeaderboardScores()
+        {
+            int totalScore = YandexGame.savesData.UserPoints.Sum();
+            YandexGame.NewLeaderboardScores(_leaderboardName, totalScore);
+        }
 
-        int biomNumber = groupNumber % biomCount;
-        return (BiomType)biomNumber;        
-    }
+        private BiomType GetBiom()
+        {
+            int groupNumber = (LevelNumber - 1) / _biomStep;
 
-    private bool GetEnabled()
-    {
-        if (LevelNumber < 1)
-            return false;
+            var biomCount = Enum.GetNames(typeof(BiomType)).Length;
 
-        if (LevelNumber == 1)
-            return true;
+            int biomNumber = groupNumber % biomCount;
+            return (BiomType)biomNumber;
+        }
 
-        LevelInfo lastLevel = YandexGame.savesData.Levels.FirstOrDefault(level => level.LevelNumber == LevelNumber - 1);
+        private bool GetEnabled()
+        {
+            if (LevelNumber < 1)
+                return false;
 
-        return lastLevel.StarsCount > 1;
-    }
+            if (LevelNumber == 1)
+                return true;
 
-    public int GetStarCount(int userPoints)
-    {
-        int maxPercent = 100;
-        float currentPercent = Mathf.Round((float)userPoints * maxPercent / (float)Points);
+            LevelInfo lastLevel = YandexGame.savesData.Levels.
+                FirstOrDefault(level => level.LevelNumber == LevelNumber - 1);
 
-        if (currentPercent < 50)
-            return 0;
-        else if (currentPercent < 70)
-            return 1;
-        else if (currentPercent < 90)
-            return 2;
-        else
-            return 3;
+            return lastLevel.StarsCount > 1;
+        }
+
+        public int GetStarCount(int userPoints)
+        {
+            int maxPercent = 100;
+            float currentPercent = Mathf.Round((float)userPoints * maxPercent / (float)Points);
+
+            if (currentPercent < 50)
+                return 0;
+            else if (currentPercent < 70)
+                return 1;
+            else if (currentPercent < 90)
+                return 2;
+            else
+                return 3;
+        }
     }
 }

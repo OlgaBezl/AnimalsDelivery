@@ -1,35 +1,37 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static LevelPanel;
+using Scripts.UI.Buttons;
 
-public class ShowRewardPanel : UIPanel
+namespace Scripts.UI.Panels
 {
-    [SerializeField] private ShowRewardButton _showRewardButton;
-    public event Action<int> IsShown;
-
-    private void OnValidate()
+    public class ShowRewardPanel : UIPanel
     {
-        if (_showRewardButton == null)
-            throw new NullReferenceException(nameof(_showRewardButton));
-    }
+        [SerializeField] private ShowRewardButton _showRewardButton;
 
-    public override void Open()
-    {
-        _showRewardButton.IsShown += ShowAndHide;
-        base.Open();
-    }
+        public event Action<int> IsShown;
 
-    public override void Hide()
-    {
-        _showRewardButton.IsShown -= ShowAndHide;
-        base.Hide();
-    }
+        private void OnValidate()
+        {
+            if (_showRewardButton == null)
+                throw new NullReferenceException(nameof(_showRewardButton));
+        }
 
-    private void ShowAndHide(int id)
-    {
-        IsShown?.Invoke(id);
-        Hide();
+        public override void Open()
+        {
+            _showRewardButton.IsShown += ShowAndHide;
+            base.Open();
+        }
+
+        public override void Hide()
+        {
+            _showRewardButton.IsShown -= ShowAndHide;
+            base.Hide();
+        }
+
+        private void ShowAndHide(int id)
+        {
+            IsShown?.Invoke(id);
+            Hide();
+        }
     }
 }

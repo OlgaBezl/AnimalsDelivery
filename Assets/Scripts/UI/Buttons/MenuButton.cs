@@ -1,21 +1,26 @@
 using UnityEngine;
 using YG;
+using Scripts.UI.Panels;
 
-public class MenuButton : DefaultButton
+namespace Scripts.UI.Buttons
 {
-    [SerializeField] private UIPanel _menuPanel;
-
-    private void OnValidate()
+    public class MenuButton : DefaultButton
     {
-        if (_menuPanel == null)
-            throw new System.NullReferenceException(nameof(_menuPanel));
-    }
-    protected override void OnClick()
-    {
-        base.OnClick();
+        [SerializeField] private UIPanel _menuPanel;
 
-        YandexGame.GameplayStop();
-        _menuPanel.Open();
-        Time.timeScale = 0;
+        private void OnValidate()
+        {
+            if (_menuPanel == null)
+                throw new System.NullReferenceException(nameof(_menuPanel));
+        }
+
+        protected override void OnClick()
+        {
+            base.OnClick();
+
+            YandexGame.GameplayStop();
+            _menuPanel.Open();
+            Time.timeScale = 0;
+        }
     }
 }

@@ -1,42 +1,46 @@
 using System;
 using UnityEngine;
+using Scripts.UI.Buttons;
 
-public class ChangePanelButtom : DefaultButton
+namespace Scripts.UI.Panels
 {
-    [SerializeField] private UIPanel _currentPanel;
-    [SerializeField] private UIPanel _secondPanel;
-
-    private void OnValidate()
+    public class ChangePanelButtom : DefaultButton
     {
-        if (_currentPanel == null)
-            throw new NullReferenceException(nameof(_currentPanel));
-    }
+        [SerializeField] private UIPanel _currentPanel;
+        [SerializeField] private UIPanel _secondPanel;
 
-    public void ChangeSecondPanel(UIPanel secondPanel)
-    {
-        if (secondPanel == null)
-            return;
+        private void OnValidate()
+        {
+            if (_currentPanel == null)
+                throw new NullReferenceException(nameof(_currentPanel));
+        }
 
-        _secondPanel = secondPanel;
-    }
+        public void ChangeSecondPanel(UIPanel secondPanel)
+        {
+            if (secondPanel == null)
+                return;
 
-    protected override void OnClick()
-    {
-        base.OnClick();
+            _secondPanel = secondPanel;
+        }
 
-        _currentPanel.IsHidden += OpenMainMenuPanel;
-        _currentPanel.Hide();
-    }
+        protected override void OnClick()
+        {
+            base.OnClick();
 
-    private void OpenMainMenuPanel()
-    {
-        _currentPanel.IsHidden -= OpenMainMenuPanel;
+            _currentPanel.IsHidden += OpenMainMenuPanel;
+            _currentPanel.Hide();
+        }
 
-        _secondPanel.SetReturnButton(_currentPanel);
+        private void OpenMainMenuPanel()
+        {
+            _currentPanel.IsHidden -= OpenMainMenuPanel;
 
-        if (_secondPanel == null)
-            return;
+            _secondPanel.SetReturnButton(_currentPanel);
 
-        _secondPanel.Open();
+            if (_secondPanel == null)
+                return;
+
+            _secondPanel.Open();
+        }
     }
 }

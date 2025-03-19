@@ -1,23 +1,27 @@
 using System;
 using UnityEngine;
 using YG;
+using Scripts.UI.Panels;
 
-public class ContinueButtom : DefaultButton
+namespace Scripts.UI.Buttons
 {
-    [SerializeField] private UIPanel _panel;
-
-    private void OnValidate()
+    public class ContinueButtom : DefaultButton
     {
-        if (_panel == null)
-            throw new NullReferenceException(nameof(_panel));
-    }
+        [SerializeField] private UIPanel _panel;
 
-    protected override void OnClick()
-    {
-        base.OnClick();
+        private void OnValidate()
+        {
+            if (_panel == null)
+                throw new NullReferenceException(nameof(_panel));
+        }
 
-        YandexGame.GameplayStart();
-        _panel.Hide();
-        Time.timeScale = 1;
+        protected override void OnClick()
+        {
+            base.OnClick();
+
+            YandexGame.GameplayStart();
+            _panel.Hide();
+            Time.timeScale = 1;
+        }
     }
 }

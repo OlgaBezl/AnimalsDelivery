@@ -1,34 +1,29 @@
 using UnityEngine;
 
-public class Rotation
+namespace Scripts.Helpers
 {
-    public enum RotationType
+    public class Rotation
     {
-        Zero = 0,
-        Quarter = 1,
-        Half = 2,
-        ReverseQuarter = 3
-    }
+        public static float ConvertRotationTypeToDegrees(RotationType rotationType)
+        {
+            return 90f * (int)rotationType;
+        }
 
-    public static float ConvertRotationTypeToDegrees(RotationType rotationType)
-    {
-        return 90f * (int)rotationType;
-    }
+        public static Vector3 ConvertRotationToDirection(RotationType rotationType)
+        {
+            if (rotationType == RotationType.Zero)
+                return Vector3.forward;
+            else if (rotationType == RotationType.Half)
+                return Vector3.back;
+            else if (rotationType == RotationType.Quarter)
+                return Vector3.right;
+            else
+                return Vector3.left;
+        }
 
-    public static Vector3 ConvertRotationToDirection(RotationType rotationType)
-    {
-        if (rotationType == RotationType.Zero)
-            return Vector3.forward;
-        else if (rotationType == RotationType.Half)
-            return Vector3.back;
-        else if (rotationType == RotationType.Quarter)
-            return Vector3.right;
-        else
-            return Vector3.left;
-    }
-
-    public static RotationType GetRandomRotationWithoutLimit()
-    {
-        return (RotationType)Random.Range(0, 4);
+        public static RotationType GetRandomRotationWithoutLimit()
+        {
+            return (RotationType)Random.Range(0, 4);
+        }
     }
 }

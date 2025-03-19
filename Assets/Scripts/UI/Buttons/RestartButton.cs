@@ -1,19 +1,20 @@
-using System;
 using UnityEngine;
 
-public class RestartButton : CommonStartButton
+namespace Scripts.UI.Buttons
 {
-    [SerializeField] private Level _level;
-
-    protected override void OnClick()
+    public class RestartButton : CommonStartButton
     {
-        Time.timeScale = 0;
-        _level.Unload();
+        [SerializeField] private Level _level;
 
-        base.OnClick();
+        protected override void OnClick()
+        {
+            Time.timeScale = 0;
+            _level.Unload();
 
-        Panel.Hide();
-        Time.timeScale = 1;
+            base.OnClick();
+
+            Panel.Hide();
+            Time.timeScale = 1;
+        }
     }
 }
-

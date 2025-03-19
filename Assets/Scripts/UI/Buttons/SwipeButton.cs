@@ -1,25 +1,26 @@
 using UnityEngine;
-using UnityEngine.UIElements;
-using YG;
-using static LevelPanel;
+using Scripts.UI.Panels;
 
-public class SwipeButton : DefaultButton
+namespace Scripts.UI.Buttons
 {
-    [SerializeField] private LevelPanel _levelPanel;
-    [SerializeField] private LoadPageType _loadPageType;
-
-    private void OnValidate()
+    public class SwipeButton : DefaultButton
     {
-        if (_levelPanel == null)
-            throw new System.NullReferenceException(nameof(_levelPanel));
-    }
+        [SerializeField] private LevelPanel _levelPanel;
+        [SerializeField] private LoadPageType _loadPageType;
 
-    protected override void OnClick()
-    {
-        base.OnClick();
+        private void OnValidate()
+        {
+            if (_levelPanel == null)
+                throw new System.NullReferenceException(nameof(_levelPanel));
+        }
 
-        _levelPanel.Clear();
-        _levelPanel.SelectPage(_loadPageType);
-        _levelPanel.Fill();
+        protected override void OnClick()
+        {
+            base.OnClick();
+
+            _levelPanel.Clear();
+            _levelPanel.SelectPage(_loadPageType);
+            _levelPanel.Fill();
+        }
     }
 }

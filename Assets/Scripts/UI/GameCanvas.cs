@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class GameCanvas : MonoBehaviour
+namespace Scripts.UI
 {
+    public class GameCanvas : MonoBehaviour
+    {
+    }
 }

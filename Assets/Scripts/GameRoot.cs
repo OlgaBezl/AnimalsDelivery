@@ -1,17 +1,21 @@
 using UnityEngine;
+using Scripts.UI.Panels;
 
-public class GameRoot : MonoBehaviour
+namespace Scripts
 {
-    [SerializeField] private UIPanel _mainMenu;
-
-    private void OnValidate()
+    public class GameRoot : MonoBehaviour
     {
-        if (_mainMenu == null)
-            throw new System.NullReferenceException(nameof(_mainMenu));
-    }
+        [SerializeField] private UIPanel _mainMenu;
 
-    private void Start()
-    {
-        _mainMenu.Open();
+        private void OnValidate()
+        {
+            if (_mainMenu == null)
+                throw new System.NullReferenceException(nameof(_mainMenu));
+        }
+
+        private void Start()
+        {
+            _mainMenu.Open();
+        }
     }
 }

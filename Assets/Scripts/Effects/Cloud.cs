@@ -1,18 +1,21 @@
 using System.Collections;
 using UnityEngine;
 
-public class Cloud : MonoBehaviour
+namespace Scripts.Effects
 {
-    [SerializeField] private float seconds = 5f;
-
-    private void Awake()
+    public class Cloud : MonoBehaviour
     {
-        StartCoroutine(DestroyAfterSomeSecond());
-    }
+        [SerializeField] private float seconds = 5f;
 
-    private IEnumerator DestroyAfterSomeSecond()
-    {
-        yield return new WaitForSeconds(seconds);
-        Destroy(gameObject);
+        private void Awake()
+        {
+            StartCoroutine(DestroyAfterSomeSecond());
+        }
+
+        private IEnumerator DestroyAfterSomeSecond()
+        {
+            yield return new WaitForSeconds(seconds);
+            Destroy(gameObject);
+        }
     }
 }

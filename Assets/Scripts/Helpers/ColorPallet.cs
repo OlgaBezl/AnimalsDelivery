@@ -1,17 +1,20 @@
 using UnityEngine;
 
-public class ColorPallet
+namespace Scripts.Helpers
 {
-    public const int ColorsCountWithoutGray = 5;
-    public const int GrayIndex = 0;
-
-    public static int GetRandomColorIndex()
+    public class ColorPallet
     {
-        int index = Random.Range(0, ColorsCountWithoutGray);
+        public const int ColorsCountWithoutGray = 5;
+        public const int GrayIndex = 0;
 
-        if (index >= GrayIndex)
-            index++;
+        public static int GetRandomColorIndex()
+        {
+            int index = Random.Range(0, ColorsCountWithoutGray);
 
-        return index;
+            if (index >= GrayIndex)
+                index++;
+
+            return index;
+        }
     }
 }

@@ -1,90 +1,91 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using YG;
+using Scripts.UI.Buttons;
 
-public class SoundManager : MonoBehaviour
+namespace Scripts.Helpers
 {
-    [SerializeField] private SoundButton[] buttons;
-    [SerializeField] private AudioSource _audioSource;
-
-    private bool _isPlaying;
-
-    private void OnValidate()
+    public class SoundManager : MonoBehaviour
     {
-        if (_audioSource == null)
-            throw new System.NullReferenceException(nameof(_audioSource));
+        [SerializeField] private SoundButton[] buttons;
+        [SerializeField] private AudioSource _audioSource;
 
-        if (buttons == null || buttons.Count() == 0)
-            throw new System.NullReferenceException(nameof(buttons));
-    }
+        private bool _isPlaying;
 
-    private void OnEnable()
-    {
-        _isPlaying = _audioSource.isPlaying;
-        YandexGame.onVisibilityWindowGame += OnVisibilityWindowGame;
-
-        foreach (SoundButton button in buttons)
+        private void OnValidate()
         {
-            button.Click += SwitchPlayingAndUpdateFlag;
+            if (_audioSource == null)
+                throw new System.NullReferenceException(nameof(_audioSource));
+
+            if (buttons == null || buttons.Count() == 0)
+                throw new System.NullReferenceException(nameof(buttons));
         }
-    }
 
-    private void OnDisable()
-    {
-        YandexGame.onVisibilityWindowGame -= OnVisibilityWindowGame;
-
-        foreach (SoundButton button in buttons)
+        private void OnEnable()
         {
-            button.Click -= SwitchPlayingAndUpdateFlag;
+            _isPlaying = _audioSource.isPlaying;
+            YandexGame.onVisibilityWindowGame += OnVisibilityWindowGame;
+
+            foreach (SoundButton button in buttons)
+            {
+                button.Click += SwitchPlayingAndUpdateFlag;
+            }
         }
-    }
 
-    public void SwitchPlayingAndUpdateFlag()
-    {
-        SwitchPlaying(_audioSource.isPlaying);
-        _isPlaying = _audioSource.isPlaying;
-    }
-
-    public void SwitchPlaying(bool isPlaying)
-    {
-        if (isPlaying)
+        private void OnDisable()
         {
-            SoundOff();
+            YandexGame.onVisibilityWindowGame -= OnVisibilityWindowGame;
+
+            foreach (SoundButton button in buttons)
+            {
+                button.Click -= SwitchPlayingAndUpdateFlag;
+            }
         }
-        else
+
+        public void SwitchPlayingAndUpdateFlag()
         {
-            SoundOn();
+            SwitchPlaying(_audioSource.isPlaying);
+            _isPlaying = _audioSource.isPlaying;
         }
-    }
 
-    private void OnVisibilityWindowGame(bool visible)
-    {    
-        Debug.Log($"OnVisibilityWindowGame _isPlaying {_isPlaying} visible {visible}");
-        if (_isPlaying)
+        public void SwitchPlaying(bool isPlaying)
         {
-            SwitchPlaying(!visible);
+            if (isPlaying)
+            {
+                SoundOff();
+            }
+            else
+            {
+                SoundOn();
+            }
         }
-    }
 
-    private void SoundOn()
-    {
-        _audioSource.UnPause();
-
-        foreach (SoundButton button in buttons)
+        private void OnVisibilityWindowGame(bool visible)
         {
-            button.SoundOn();
+            if (_isPlaying)
+            {
+                SwitchPlaying(!visible);
+            }
         }
-    }
 
-    private void SoundOff()
-    {
-        _audioSource.Pause();
-
-        foreach (SoundButton button in buttons)
+        private void SoundOn()
         {
-            button.SoundOff();
+            _audioSource.UnPause();
+
+            foreach (SoundButton button in buttons)
+            {
+                button.SoundOn();
+            }
+        }
+
+        private void SoundOff()
+        {
+            _audioSource.Pause();
+
+            foreach (SoundButton button in buttons)
+            {
+                button.SoundOff();
+            }
         }
     }
 }

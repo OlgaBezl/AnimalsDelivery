@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum RewardType
+namespace Scripts.Helpers
 {
-    UnlockParkingPlace,
-    AddCar,
-    ContinueLevel
+    public enum RewardType
+    {
+        UnlockParkingPlace,
+        AddCar,
+        ContinueLevel
+    }
 }

@@ -1,35 +1,40 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Scripts.Cars.Containers;
+using Scripts.Cars.Model;
+using Scripts.Queues;
 
-public class CarCololrsList : MonoBehaviour
+namespace Scripts.Helpers
 {
-    [SerializeField] private FirstParking _firstParking;
-    [SerializeField] private CarQueue _carQueue;
-    [SerializeField] private SecondParking _secondParking;
-
-    private CarList _carList;
-
-    private void OnValidate()
+    public class CarCololrsList : MonoBehaviour
     {
-        if (_firstParking == null)
-            throw new NullReferenceException(nameof(_firstParking));
+        [SerializeField] private FirstParking _firstParking;
+        [SerializeField] private CarQueue _carQueue;
+        [SerializeField] private SecondParking _secondParking;
 
-        if (_carQueue == null)
-            throw new NullReferenceException(nameof(_carQueue));
+        private CarList _carList;
 
-        if (_secondParking == null)
-            throw new NullReferenceException(nameof(_secondParking));
+        private void OnValidate()
+        {
+            if (_firstParking == null)
+                throw new NullReferenceException(nameof(_firstParking));
+
+            if (_carQueue == null)
+                throw new NullReferenceException(nameof(_carQueue));
+
+            if (_secondParking == null)
+                throw new NullReferenceException(nameof(_secondParking));
+        }
+
+        public void StartLevel(CarList list)
+        {
+            _carList = list;
+        }
+
+        public int GetFreeRandomColorIndex(List<Tuple<int, int>> exceptColorTuples)
+        {
+            return _carList.GetRandomIndex();
+        }
     }
-
-    public void StartLevel(CarList list)
-    {
-        _carList = list;
-    }
-
-    public int GetFreeRandomColorIndex(List<Tuple<int, int>> exceptColorTuples)
-    {
-        return _carList.GetRandomIndex();
-    }
-
 }

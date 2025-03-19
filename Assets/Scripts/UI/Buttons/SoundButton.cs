@@ -2,39 +2,42 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SoundButton : DefaultButton
+namespace Scripts.UI.Buttons
 {
-    [SerializeField] private Image _image;
-    [SerializeField] private Sprite _withoutSoundSptite;
-    [SerializeField] private Sprite _soundSptite;
-
-    public event Action Click;
-
-    private void OnValidate()
+    public class SoundButton : DefaultButton
     {
-        if (_image == null)
-            throw new NullReferenceException(nameof(_image));
+        [SerializeField] private Image _image;
+        [SerializeField] private Sprite _withoutSoundSptite;
+        [SerializeField] private Sprite _soundSptite;
 
-        if (_withoutSoundSptite == null)
-            throw new NullReferenceException(nameof(_withoutSoundSptite));
+        public event Action Click;
 
-        if (_soundSptite == null)
-            throw new NullReferenceException(nameof(_soundSptite));
-    }
+        private void OnValidate()
+        {
+            if (_image == null)
+                throw new NullReferenceException(nameof(_image));
 
-    protected override void OnClick()
-    {
-        base.OnClick();
-        Click?.Invoke();
-    }
+            if (_withoutSoundSptite == null)
+                throw new NullReferenceException(nameof(_withoutSoundSptite));
 
-    public void SoundOn()
-    {
-        _image.sprite = _soundSptite;
-    }
+            if (_soundSptite == null)
+                throw new NullReferenceException(nameof(_soundSptite));
+        }
 
-    public void SoundOff()
-    {
-        _image.sprite = _withoutSoundSptite;
+        protected override void OnClick()
+        {
+            base.OnClick();
+            Click?.Invoke();
+        }
+
+        public void SoundOn()
+        {
+            _image.sprite = _soundSptite;
+        }
+
+        public void SoundOff()
+        {
+            _image.sprite = _withoutSoundSptite;
+        }
     }
 }

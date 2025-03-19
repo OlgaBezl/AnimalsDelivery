@@ -3,23 +3,30 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using YG;
+using Scripts.Enviroment;
+using Scripts.Progress;
 
-public class UIImagePainter : MonoBehaviour
+namespace Scripts.UI
 {
-    [SerializeField] private Image _image;
-    [SerializeField] private BiomPainter _biomPainter;
-
-    private void OnValidate()
+    public class UIImagePainter : MonoBehaviour
     {
-        if (_image == null)
-            throw new NullReferenceException(nameof(_image));
-    }
+        [SerializeField] private Image _image;
+        [SerializeField] private BiomPainter _biomPainter;
 
-    public void SetActualTone(bool nextLevel)
-    {
-        LevelInfo lastLevel = YandexGame.savesData.Levels.FirstOrDefault(lvl => lvl.LevelNumber + (nextLevel ? 1 : 0) == YandexGame.savesData.CurrentLevel.LevelNumber);
-        Color tone = _biomPainter.GetTone(lastLevel.Biom);
-        tone.a = 1f;
-        _image.color = tone;
+        private void OnValidate()
+        {
+            if (_image == null)
+                throw new NullReferenceException(nameof(_image));
+        }
+
+        public void SetActualTone(bool nextLevel)
+        {
+            int currentLevelNumber = YandexGame.savesData.CurrentLevel.LevelNumber;
+            LevelInfo lastLevel = YandexGame.savesData.Levels.
+                FirstOrDefault(lvl => lvl.LevelNumber + (nextLevel ? 1 : 0) == currentLevelNumber);
+            Color tone = _biomPainter.GetTone(lastLevel.Biom);
+            tone.a = 1f;
+            _image.color = tone;
+        }
     }
 }

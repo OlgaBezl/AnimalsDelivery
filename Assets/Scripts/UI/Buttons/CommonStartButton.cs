@@ -1,17 +1,20 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using YG;
+using Scripts.UI.Panels;
+using Scripts.Progress;
 
-public class CommonStartButton : DefaultButton
+namespace Scripts.UI.Buttons
 {
-    [field: SerializeField] public UIPanel Panel { get;private set; }
-
-    public event Action<LevelInfo> Click;
-
-    protected override void OnClick()
+    public class CommonStartButton : DefaultButton
     {
-        Click?.Invoke(YandexGame.savesData.CurrentLevel);
+        [field: SerializeField] public UIPanel Panel { get; private set; }
+
+        public event Action<LevelInfo> Click;
+
+        protected override void OnClick()
+        {
+            Click?.Invoke(YandexGame.savesData.CurrentLevel);
+        }
     }
 }
