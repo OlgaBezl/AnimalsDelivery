@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
-using TMPro;
 using DG.Tweening;
+using Scripts.Progress;
+using Scripts.UI.Panels;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Scripts.UI.Panels;
-using Scripts.Progress;
 
 namespace Scripts.UI.Buttons
 {

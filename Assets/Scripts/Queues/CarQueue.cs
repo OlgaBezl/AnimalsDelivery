@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using Scripts.Cars;
-using Scripts.Cars.Model;
 using Scripts.Cars.Containers;
+using Scripts.Cars.Model;
+using UnityEngine;
 
 namespace Scripts.Queues
 {
@@ -29,29 +29,20 @@ namespace Scripts.Queues
             _parking.NewPlaceUnlocked += Unlock;
         }
 
-        private void Unlock()
-        {
-            if (Queue.Count > 0 && _parking.HasFreePlace())
-            {
-                _parking.TakePlace(Queue.Peek());
-                MoveCarQueue();
-            }
-        }
-
         public List<Tuple<int, int>> GetColors()
         {
-            return Queue.Select(car => new Tuple<int, int>(car.ColorIndex, car.Type.SeatsCount)).ToList();
+            return Queue.Select(car => new Tuple<int, int>(car.ColorIndex, car.Specification.SeatsCount)).ToList();
         }
 
         public void QueueUpCar(CarModel carModel)
         {
-            CarWithSeats prefab = _carPrefabs.FirstOrDefault(car => car.Type.SeatsCount == carModel.SeatsCount);
+            CarWithSeats prefab = _carPrefabs.FirstOrDefault(car => car.Specification.SeatsCount == carModel.SeatsCount);
 
             Vector3 offset = Vector3.zero;
 
             if (Queue.Count > 0)
             {
-                float zOffset = Queue.Sum(item => item.Length) - Queue.First().Type.Length + prefab.Type.Length;
+                float zOffset = Queue.Sum(item => item.Length) - Queue.First().Specification.Length + prefab.Specification.Length;
                 offset = Vector3.back * zOffset;
             }
 
@@ -83,6 +74,15 @@ namespace Scripts.Queues
         {
             carWithSeats.LeftParking -= CarLeftParking;
 
+            if (Queue.Count > 0 && _parking.HasFreePlace())
+            {
+                _parking.TakePlace(Queue.Peek());
+                MoveCarQueue();
+            }
+        }
+
+        private void Unlock()
+        {
             if (Queue.Count > 0 && _parking.HasFreePlace())
             {
                 _parking.TakePlace(Queue.Peek());

@@ -1,7 +1,8 @@
 using System;
-using UnityEngine;
 using DG.Tweening;
 using Scripts.Cars.Matrix;
+using Scripts.Cars.Model;
+using UnityEngine;
 
 namespace Scripts.Cars
 {
@@ -17,15 +18,22 @@ namespace Scripts.Cars
         private Vector3 _startPoint;
         private float _maxDistanceToParkingBorder;
 
-        public event Action<ArrowCar> LeaveParkingStart;
-        public event Action<ArrowCar> LeaveParkingEnd;
+        public event Action<ArrowCar> ParkingStartLeaving;
+        public event Action<ArrowCar> ParkingFinalLeaved;
 
-        public int X { get; private set; }
-        public int Z { get; private set; }
-        public int ForwardX { get; private set; }
-        public int ForwardZ { get; private set; }
-        public int DirectionX { get; private set; }
-        public int DirectionZ { get; private set; }
+        public Vector2Int Location { get; private set; }
+        public Vector2Int Forward { get; private set; }
+        public Vector2Int Direction { get; private set; }
+
+        private void OnMouseUp()
+        {
+            if (CanLeftParking)
+            {
+                ParkingStartLeaving?.Invoke(this);
+                Trace.Show();
+                MoveToParkingEdge(_transform.position + _transform.forward * _maxDistanceToParkingBorder);
+            }
+        }
 
         public void Initialize(CarMatrix carMatrix, int colorIndex, Vector3 parkingBorder)
         {
@@ -38,32 +46,25 @@ namespace Scripts.Cars
 
             var direction = transform.forward;
             Vector3 startPosition = transform.position;
-            Vector3 forwardPosition = transform.position + Type.Length * direction;
+            Vector3 forwardPosition = transform.position + Specification.Length * direction;
 
-            X = (int)Mathf.Round(startPosition.x) + _carMatrix.MatrixCenter;
-            Z = (int)Mathf.Round(startPosition.z) + _carMatrix.MatrixCenter;
+            int x = (int)Mathf.Round(startPosition.x) + _carMatrix.MatrixCenter;
+            int z = (int)Mathf.Round(startPosition.z) + _carMatrix.MatrixCenter;
+            Location = new Vector2Int(x, z);
 
-            ForwardX = (int)Mathf.Round(forwardPosition.x) + _carMatrix.MatrixCenter;
-            ForwardZ = (int)Mathf.Round(forwardPosition.z) + _carMatrix.MatrixCenter;
+            int forwardX = (int)Mathf.Round(forwardPosition.x) + _carMatrix.MatrixCenter;
+            int forwardZ = (int)Mathf.Round(forwardPosition.z) + _carMatrix.MatrixCenter;
+            Forward = new Vector2Int(forwardX, forwardZ);
 
-            DirectionX = (int)direction.normalized.x;
-            DirectionZ = (int)direction.normalized.z;
-        }
-
-        private void OnMouseUp()
-        {
-            if (CanLeftParking)
-            {
-                LeaveParkingStart?.Invoke(this);
-                Trace.Show();
-                MoveToParkingEdge(_transform.position + _transform.forward * _maxDistanceToParkingBorder);
-            }
+            int directionX = (int)direction.normalized.x;
+            int directionZ = (int)direction.normalized.z;
+            Direction = new Vector2Int(directionX, directionZ);
         }
 
         public override void GrayModeOff()
         {
             base.GrayModeOff();
-            Model.GrayModeOff();
+            Model.ChangeStatus(CarModelStatus.FirstParkingColor);
             _arrow.SetActive(true);
         }
 
@@ -132,7 +133,7 @@ namespace Scripts.Cars
                 Append(_transform.DORotateQuaternion(rotation, RotateDuration)).
                 Append(_transform.DOMove(target, moveDuration)).
                 SetEase(Ease.Linear).
-                onComplete += () => LeaveParkingEnd?.Invoke(this);
+                onComplete += () => ParkingFinalLeaved?.Invoke(this);
         }
     }
 }

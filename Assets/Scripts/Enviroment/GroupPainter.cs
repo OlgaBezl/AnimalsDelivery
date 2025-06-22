@@ -15,8 +15,8 @@ namespace Scripts.Enviroment
 
         public void Paint(BiomType biomType)
         {
-            Texture paleTexture = _biomPainter.GetPaleTexture(biomType);
-            Texture mainTexture = _biomPainter.GetTexture(biomType);
+            Texture paleTexture = _biomPainter.GetBiom(biomType).PaleTexture;
+            Texture mainTexture = _biomPainter.GetBiom(biomType).MainTexture;
 
             ObjectPainter[] objects = transform.GetComponentsInChildren<ObjectPainter>();
             int? previousIndex = null;

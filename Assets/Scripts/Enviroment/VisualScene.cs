@@ -13,7 +13,7 @@ namespace Scripts.Enviroment
 
         public void StartLevel(BiomType biomType)
         {
-            _background.SetTone(_biomPainter.GetTone(biomType));
+            _background.SetTone(_biomPainter.GetBiom(biomType).Tone);
 
             bool changeBiom = biomType != _currentBiomType;
             _currentBiomType = biomType;

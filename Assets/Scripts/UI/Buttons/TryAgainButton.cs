@@ -1,8 +1,8 @@
 using System;
-using UnityEngine;
-using YG;
 using Scripts.Helpers;
 using Scripts.UI.Panels;
+using UnityEngine;
+using YG;
 
 namespace Scripts.UI.Buttons
 {

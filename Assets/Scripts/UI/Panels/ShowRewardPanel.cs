@@ -1,6 +1,6 @@
 using System;
-using UnityEngine;
 using Scripts.UI.Buttons;
+using UnityEngine;
 
 namespace Scripts.UI.Panels
 {

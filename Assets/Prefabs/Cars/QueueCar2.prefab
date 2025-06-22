@@ -247,7 +247,7 @@ MonoBehaviour:
   _objectPainter: {fileID: 8861595754805529406}
   RotateDuration: 0.2
   <Speed>k__BackingField: 14
-  <Type>k__BackingField: {fileID: 11400000, guid: 2500d2de393291745b5c4853c6b649a7, type: 2}
+  <Specification>k__BackingField: {fileID: 11400000, guid: 2500d2de393291745b5c4853c6b649a7, type: 2}
   <Trace>k__BackingField: {fileID: 8769241245456318231}
   _seatsContainer: {fileID: 6076732337970509564}
   EntryPoint: {fileID: 8364773753221785783}

@@ -50,7 +50,7 @@ MonoBehaviour:
   _objectPainter: {fileID: 1274460957955505600}
   RotateDuration: 0.2
   <Speed>k__BackingField: 14
-  <Type>k__BackingField: {fileID: 11400000, guid: 978eb8af8267f394fbe94772cd641be4, type: 2}
+  <Specification>k__BackingField: {fileID: 11400000, guid: 978eb8af8267f394fbe94772cd641be4, type: 2}
   <Trace>k__BackingField: {fileID: 1874104009328623624}
   _arrow: {fileID: 7490505024306639496}
   _rotation: {fileID: 4407672815508596035, guid: 4e7b9faa0075149499b4044c5de3f8c9, type: 3}

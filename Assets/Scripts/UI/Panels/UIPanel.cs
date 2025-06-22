@@ -1,6 +1,7 @@
 using System;
-using UnityEngine;
 using DG.Tweening;
+using Scripts.UI.Buttons;
+using UnityEngine;
 
 namespace Scripts.UI.Panels
 {
@@ -11,7 +12,7 @@ namespace Scripts.UI.Panels
         [SerializeField] private float _jumpDuration = 0.25f;
         [SerializeField] private float _verticalOffset = 800f;
         [SerializeField] private float _verticalMoveDuration = 0.75f;
-        [SerializeField] private ChangePanelButtom _closeButtom;
+        [SerializeField] private ChangePanelButton _closeButtom;
 
         private RectTransform _rectTransform;
 

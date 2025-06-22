@@ -1,6 +1,6 @@
 using Scripts.Animals;
-using UnityEngine;
 using Scripts.UI.Buttons;
+using UnityEngine;
 
 namespace Scripts.UI.Panels
 {

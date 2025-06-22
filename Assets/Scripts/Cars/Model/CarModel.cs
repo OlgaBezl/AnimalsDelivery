@@ -4,13 +4,6 @@ namespace Scripts.Cars.Model
     {
         private int _animalsCount;
 
-        public int Id { get; private set; }
-        public int ColorIndex { get; private set; }
-        public int SeatsCount { get; private set; }
-        public int OrderParking { get; private set; }
-        public CarModelStatus Status { get; private set; }
-        public bool IsLinked => SeatsCount == _animalsCount;
-
         public CarModel(int id, int colorIndex, int seatsCount)
         {
             Id = id;
@@ -20,40 +13,27 @@ namespace Scripts.Cars.Model
             Status = CarModelStatus.FirstParkingGray;
         }
 
+        public int Id { get; private set; }
+        public int ColorIndex { get; private set; }
+        public int SeatsCount { get; private set; }
+        public int OrderParking { get; private set; }
+        public CarModelStatus Status { get; private set; }
+        public bool IsLinked => SeatsCount == _animalsCount;
+
         public void AddAnimal()
         {
             _animalsCount++;
         }
 
-        public void GrayModeOff()
+        public void ChangeStatus(CarModelStatus status)
         {
-            Status = CarModelStatus.FirstParkingColor;
-        }
-
-        public void StartLeaveFirstParking()
-        {
-            Status = CarModelStatus.FirstParkingLast;
-        }
-
-        public void LeaveFirstParking()
-        {
-            Status = CarModelStatus.QueueWait;
+            Status = status;
         }
 
         public void MoveToSecondParking(int orderParking)
         {
             OrderParking = orderParking;
-            Status = CarModelStatus.SecondParkingMove;
-        }
-
-        public void StayOnSecondParking()
-        {
-            Status = CarModelStatus.SecondParkingStay;
-        }
-
-        public void LeftSecondParking()
-        {
-            Status = CarModelStatus.SecondParkingLeft;
+            ChangeStatus(CarModelStatus.SecondParkingMove);
         }
     }
 }

@@ -2,8 +2,8 @@ namespace Scripts.Cars.Seats
 {
     public enum SeatState
     {
-        Free,
-        Wait,
-        Taken
+        Free = 0,
+        Wait = 1,
+        Taken = 2
     }
 }

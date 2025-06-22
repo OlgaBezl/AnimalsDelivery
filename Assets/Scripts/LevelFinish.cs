@@ -1,8 +1,8 @@
 using System;
-using UnityEngine;
+using Scripts.Progress;
 using Scripts.UI;
 using Scripts.UI.Panels;
-using Scripts.Progress;
+using UnityEngine;
 
 namespace Scripts
 {

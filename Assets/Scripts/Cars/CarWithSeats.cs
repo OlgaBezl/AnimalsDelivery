@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using DG.Tweening;
-using Scripts.Queues;
 using Scripts.Cars.CarPlaces;
 using Scripts.Cars.Seats;
+using Scripts.Queues;
+using UnityEngine;
 
 namespace Scripts.Cars
 {
@@ -25,12 +25,12 @@ namespace Scripts.Cars
         public event Action<CarWithSeats> StartLeftParking;
         public event Action<CarWithSeats> LeftParking;
 
-        public CarWithSeatsState State { get; private set; }
-        public bool HasFreeSeats => 
+        public CarState State { get; private set; }
+        public bool HasFreeSeats =>
             _seats == null ? false : _seats.Any(seat => seat.State == SeatState.Free);
-        public int FreeSeatsCount => 
-            _seats == null ? Type.SeatsCount : _seats.Count(seat => seat.State == SeatState.Free);
-        public float Length => Type.Length;
+        public int FreeSeatsCount =>
+            _seats == null ? Specification.SeatsCount : _seats.Count(seat => seat.State == SeatState.Free);
+        public float Length => Specification.Length;
 
         private void OnValidate()
         {
@@ -46,7 +46,7 @@ namespace Scripts.Cars
 
         private void OnMouseUp()
         {
-            if (State == CarWithSeatsState.Parked && !_seats.Any(seat => seat.State == SeatState.Wait))
+            if (State == CarState.Parked && !_seats.Any(seat => seat.State == SeatState.Wait))
             {
                 SlowLeaveParking(_exitParkingPoint);
             }
@@ -74,10 +74,10 @@ namespace Scripts.Cars
             if (exitParkingPoint == null)
                 throw new NullReferenceException(nameof(exitParkingPoint));
 
-            State = CarWithSeatsState.GoingToParking;
+            State = CarState.GoingToParking;
             _currentParkingPlace = carPlace;
             _exitParkingPoint = exitParkingPoint;
-            Vector3 carLengthOffset = carPlace.transform.forward * (Type.Length - 1f) / 2f;
+            Vector3 carLengthOffset = carPlace.transform.forward * (Specification.Length - 1f) / 2f;
 
             Trace.Show();
 
@@ -103,21 +103,21 @@ namespace Scripts.Cars
             if (exitParkingPoint == null)
                 throw new NullReferenceException(nameof(exitParkingPoint));
 
-            State = CarWithSeatsState.GoingToParking;
+            State = CarState.GoingToParking;
             _currentParkingPlace = carPlace;
             _exitParkingPoint = exitParkingPoint;
         }
 
         public void Park()
         {
-            State = CarWithSeatsState.Parked;
+            State = CarState.Parked;
             Trace.Hide();
             WasParked?.Invoke(this);
         }
 
         public void SlowLeaveParking(Transform exitParkingPoint)
         {
-            State = CarWithSeatsState.LeftParking;
+            State = CarState.LeftParking;
             _currentParkingPlace.FreeUp();
             StartLeftParking?.Invoke(this);
 
@@ -151,12 +151,6 @@ namespace Scripts.Cars
             return freeSeat;
         }
 
-        private void FreeUpParkingPlace()
-        {
-            _currentParkingPlace = null;
-            LeftParking?.Invoke(this);
-        }
-
         public void MoveToNextPosition(Vector3 nextPosition)
         {
             float moveDuration = Vector3.Magnitude(transform.position - nextPosition) / Speed;
@@ -165,33 +159,6 @@ namespace Scripts.Cars
                 Append(transform.DOMove(nextPosition, moveDuration)).
                 SetEase(Ease.Linear).
                 onComplete += () => WasMovedInQueue?.Invoke(this);
-        }
-
-        private void SeatWasTaked(Seat seat)
-        {
-            seat.Taked += SeatWasTaked;
-
-            if (HasFreeSeats == false)
-            {
-                JumpAndLeaveParking();
-            }
-        }
-
-        private void JumpAndLeaveParking()
-        {
-            State = CarWithSeatsState.LeftParking;
-            float jumpHeight = 1.5f;
-            Vector3 jumpOffset = new Vector3(0, jumpHeight, 0);
-            Vector3 halfJumpOffset = new Vector3(0, jumpHeight / 2f, 0);
-            float jumpDuration = jumpHeight / Speed;
-            float fallFactor = 0.5f;
-
-            DOTween.Sequence().
-                Append(_transform.DOMove(_transform.position + jumpOffset, jumpDuration)).
-                Append(_transform.DOMove(_transform.position, jumpDuration * fallFactor)).
-                Append(_transform.DOMove(_transform.position + halfJumpOffset, jumpDuration)).
-                Append(_transform.DOMove(_transform.position, jumpDuration * fallFactor)).
-                onComplete += () => SlowLeaveParking(_exitParkingPoint);
         }
 
         public void Jump(float delay)
@@ -208,6 +175,39 @@ namespace Scripts.Cars
                 Append(_transform.DOMove(_transform.position, jumpDuration * fallFactor)).
                 Append(_transform.DOMove(_transform.position + halfJumpOffset, jumpDuration)).
                 Append(_transform.DOMove(_transform.position, jumpDuration * fallFactor));
+        }
+
+        private void FreeUpParkingPlace()
+        {
+            _currentParkingPlace = null;
+            LeftParking?.Invoke(this);
+        }
+
+        private void SeatWasTaked(Seat seat)
+        {
+            seat.Taked += SeatWasTaked;
+
+            if (HasFreeSeats == false)
+            {
+                JumpAndLeaveParking();
+            }
+        }
+
+        private void JumpAndLeaveParking()
+        {
+            State = CarState.LeftParking;
+            float jumpHeight = 1.5f;
+            Vector3 jumpOffset = new Vector3(0, jumpHeight, 0);
+            Vector3 halfJumpOffset = new Vector3(0, jumpHeight / 2f, 0);
+            float jumpDuration = jumpHeight / Speed;
+            float fallFactor = 0.5f;
+
+            DOTween.Sequence().
+                Append(_transform.DOMove(_transform.position + jumpOffset, jumpDuration)).
+                Append(_transform.DOMove(_transform.position, jumpDuration * fallFactor)).
+                Append(_transform.DOMove(_transform.position + halfJumpOffset, jumpDuration)).
+                Append(_transform.DOMove(_transform.position, jumpDuration * fallFactor)).
+                onComplete += () => SlowLeaveParking(_exitParkingPoint);
         }
     }
 }

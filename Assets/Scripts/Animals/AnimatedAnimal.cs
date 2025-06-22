@@ -1,6 +1,6 @@
-using UnityEngine;
-using Scripts.Helpers;
 using Scripts.Effects;
+using Scripts.Helpers;
+using UnityEngine;
 
 namespace Scripts.Animals
 {

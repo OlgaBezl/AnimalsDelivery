@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using Scripts.Cars.Matrix;
 using Scripts.Cars.Model;
 using Scripts.Effects;
 using Scripts.Queues;
+using UnityEngine;
 
 namespace Scripts.Cars.Containers
 {
@@ -35,7 +35,7 @@ namespace Scripts.Cars.Containers
             _carList = carList;
         }
 
-        public void FinishLevel()
+        public void Unload()
         {
             _cars = null;
         }
@@ -46,30 +46,8 @@ namespace Scripts.Cars.Containers
                 throw new ArgumentNullException(nameof(car));
 
             _cars.Add(car);
-            car.LeaveParkingStart += CarStartLeaveParking;
-            car.LeaveParkingEnd += CarFinishLeaveParking;
-        }
-
-        private void CarStartLeaveParking(ArrowCar car)
-        {
-            car.LeaveParkingStart -= CarStartLeaveParking;
-            car.Model.StartLeaveFirstParking();
-
-            _cars.Remove(car);
-            _carMatrix.ClearCarPlace(car);
-            UpdateGrayMode();
-        }
-
-        private void CarFinishLeaveParking(ArrowCar car)
-        {
-            car.LeaveParkingEnd -= CarFinishLeaveParking;
-            car.Model.LeaveFirstParking();
-            _carList.FindHintCarAndInvokeAction();
-
-            Destroy(car.gameObject);
-            Instantiate(_cloud, car.transform.position, car.transform.rotation);
-
-            _carQueue.QueueUpCar(car.Model);
+            car.ParkingStartLeaving += CarStartLeaveParking;
+            car.ParkingFinalLeaved += CarFinishLeaveParking;
         }
 
         public void UpdateGrayMode()
@@ -85,6 +63,28 @@ namespace Scripts.Cars.Containers
                     car.GrayModeOn();
                 }
             }
+        }
+
+        private void CarStartLeaveParking(ArrowCar car)
+        {
+            car.ParkingStartLeaving -= CarStartLeaveParking;
+            car.Model.ChangeStatus(CarModelStatus.FirstParkingLast);
+
+            _cars.Remove(car);
+            _carMatrix.ClearCarPlace(car);
+            UpdateGrayMode();
+        }
+
+        private void CarFinishLeaveParking(ArrowCar car)
+        {
+            car.ParkingFinalLeaved -= CarFinishLeaveParking;
+            car.Model.ChangeStatus(CarModelStatus.QueueWait);
+            _carList.FindHintCarAndInvokeAction();
+
+            Destroy(car.gameObject);
+            Instantiate(_cloud, car.transform.position, car.transform.rotation);
+
+            _carQueue.QueueUpCar(car.Model);
         }
     }
 }

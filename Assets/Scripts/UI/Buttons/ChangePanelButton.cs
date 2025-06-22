@@ -1,10 +1,10 @@
 using System;
+using Scripts.UI.Panels;
 using UnityEngine;
-using Scripts.UI.Buttons;
 
-namespace Scripts.UI.Panels
+namespace Scripts.UI.Buttons
 {
-    public class ChangePanelButtom : DefaultButton
+    public class ChangePanelButton : DefaultButton
     {
         [SerializeField] private UIPanel _currentPanel;
         [SerializeField] private UIPanel _secondPanel;

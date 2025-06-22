@@ -63,7 +63,7 @@ namespace YG.Insides
 
             if (objectsTranlate.Count > 0)
             {
-                if (GUILayout.Button("Clear", GUILayout.Height(22)))
+                if (GUILayout.Button("Unload", GUILayout.Height(22)))
                 {
                     objectsTranlate.Clear();
                 }

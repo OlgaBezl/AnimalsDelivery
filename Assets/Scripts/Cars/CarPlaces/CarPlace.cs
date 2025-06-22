@@ -1,19 +1,20 @@
 using System;
-using UnityEngine;
 using Scripts.Enviroment;
 using Scripts.UI.Panels;
+using UnityEngine;
 
 namespace Scripts.Cars.CarPlaces
 {
     public class CarPlace : MonoBehaviour
     {
         [SerializeField] private ObjectPainter _objectPainter;
-        [field: SerializeField] public Transform EntryPoint { get; private set; }
-        [field: SerializeField] public Transform ExitPoint { get; private set; }
 
         private ShowRewardPanel _showRewardPanel;
 
         public event Action Unlocked;
+
+        [field: SerializeField] public Transform EntryPoint { get; private set; }
+        [field: SerializeField] public Transform ExitPoint { get; private set; }
 
         public bool IsFree { get; private set; } = true;
         public bool IsLocked { get; private set; } = false;
@@ -40,15 +41,6 @@ namespace Scripts.Cars.CarPlaces
             }
         }
 
-        private void Unlock(int id)
-        {
-            _showRewardPanel.IsShown -= Unlock;
-            IsLocked = false;
-
-            Unlocked?.Invoke();
-            _objectPainter.MoveTextureByOffset(0);
-        }
-
         public void Initialize(bool isLocked, ShowRewardPanel showRewardPanel, int orderNumber)
         {
             IsLocked = isLocked;
@@ -70,5 +62,15 @@ namespace Scripts.Cars.CarPlaces
         {
             IsFree = true;
         }
+
+        private void Unlock(int id)
+        {
+            _showRewardPanel.IsShown -= Unlock;
+            IsLocked = false;
+
+            Unlocked?.Invoke();
+            _objectPainter.MoveTextureByOffset(0);
+        }
+
     }
 }

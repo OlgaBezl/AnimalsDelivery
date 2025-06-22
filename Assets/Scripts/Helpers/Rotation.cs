@@ -9,16 +9,16 @@ namespace Scripts.Helpers
             return 90f * (int)rotationType;
         }
 
-        public static Vector3 ConvertRotationToDirection(RotationType rotationType)
+        public static Vector3Int ConvertRotationToDirection(RotationType rotationType)
         {
             if (rotationType == RotationType.Zero)
-                return Vector3.forward;
+                return Vector3Int.forward;
             else if (rotationType == RotationType.Half)
-                return Vector3.back;
+                return Vector3Int.back;
             else if (rotationType == RotationType.Quarter)
-                return Vector3.right;
+                return Vector3Int.right;
             else
-                return Vector3.left;
+                return Vector3Int.left;
         }
 
         public static RotationType GetRandomRotationWithoutLimit()

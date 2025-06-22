@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
+using Scripts.Enviroment;
+using Scripts.Progress;
 using UnityEngine;
 using UnityEngine.UI;
 using YG;
-using Scripts.Enviroment;
-using Scripts.Progress;
 
 namespace Scripts.UI
 {
@@ -24,7 +24,7 @@ namespace Scripts.UI
             int currentLevelNumber = YandexGame.savesData.CurrentLevel.LevelNumber;
             LevelInfo lastLevel = YandexGame.savesData.Levels.
                 FirstOrDefault(lvl => lvl.LevelNumber + (nextLevel ? 1 : 0) == currentLevelNumber);
-            Color tone = _biomPainter.GetTone(lastLevel.Biom);
+            Color tone = _biomPainter.GetBiom(lastLevel.Biom).Tone;
             tone.a = 1f;
             _image.color = tone;
         }

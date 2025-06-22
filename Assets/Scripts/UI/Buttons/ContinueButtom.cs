@@ -1,7 +1,7 @@
 using System;
+using Scripts.UI.Panels;
 using UnityEngine;
 using YG;
-using Scripts.UI.Panels;
 
 namespace Scripts.UI.Buttons
 {

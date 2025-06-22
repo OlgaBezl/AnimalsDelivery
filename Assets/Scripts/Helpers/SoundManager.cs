@@ -1,7 +1,7 @@
 using System.Linq;
+using Scripts.UI.Buttons;
 using UnityEngine;
 using YG;
-using Scripts.UI.Buttons;
 
 namespace Scripts.Helpers
 {

@@ -11,14 +11,14 @@ namespace Scripts.Cars.Matrix
 
         private MatrixCell[,] _matrix;
         private int _matrixSize = 50;
-        private List<Vector3> _barrierCheckedList;
+        private List<Vector3Int> _barrierCheckedList;
+        private Vector3Int _matrixCenterOffset;
 
         public int MatrixCenter { get; private set; }
-
         public void StartLevel()
         {
             _matrix = new MatrixCell[_matrixSize, _matrixSize];
-            _barrierCheckedList = new List<Vector3>();
+            _barrierCheckedList = new List<Vector3Int>();
 
             for (int x = 0; x < _matrixSize; x++)
             {
@@ -29,9 +29,10 @@ namespace Scripts.Cars.Matrix
             }
 
             MatrixCenter = _matrixSize / 2;
+            _matrixCenterOffset = new Vector3Int(MatrixCenter, MatrixCenter, MatrixCenter);
         }
 
-        public void FinishLevel()
+        public void Unload()
         {
             _matrix = null;
 
@@ -41,31 +42,25 @@ namespace Scripts.Cars.Matrix
             }
         }
 
-        public bool CanGenerateCarByPosition(int length, Vector3 forward, float startX, float startZ)
+        public bool CanGenerateCarByPosition(int length, Vector3Int forward, Vector3Int startPosition)
         {
-            int directionX = (int)forward.normalized.x;
-            int directionZ = (int)forward.normalized.z;
-
-            int x = MatrixCenter + (int)Mathf.Round(startX);
-            int z = MatrixCenter + (int)Mathf.Round(startZ);
+            Vector3Int position = startPosition + _matrixCenterOffset;
 
             for (int offset = 0; offset < length; offset++)
             {
-                if (_matrix[x, z].TryMark(forward) == false)
+                if (_matrix[position.x, position.z].TryMark(forward) == false)
                 {
                     ClearTempFields();
                     return false;
                 }
 
-                x += directionX;
-                z += directionZ;
+                position += forward;
             }
 
             _barrierCheckedList.Clear();
-            x -= directionX;
-            z -= directionZ;
+            position -= forward;
 
-            if (HasBarrier(forward, x, z))
+            if (HasBarrier(forward, new Vector3Int(position.x, 0, position.z)))
             {
                 ClearTempFields();
                 return false;
@@ -74,21 +69,18 @@ namespace Scripts.Cars.Matrix
             return true;
         }
 
-        public bool HasBarrier(Vector3 forward, int startX, int startZ)
+        public bool HasBarrier(Vector3Int forward, Vector3Int startPosition)
         {
-            int directionX = (int)forward.normalized.x;
-            int directionZ = (int)forward.normalized.z;
+            Vector3Int position = startPosition;
+            _barrierCheckedList.Add(position);
 
-            int x = startX;
-            int z = startZ;
-            _barrierCheckedList.Add(new Vector3(x, 0, z));
-
-            while (x < _matrixSize - 1 && z < _matrixSize - 1 && x > 0 && z > 0)
+            while (position.x < _matrixSize - 1 &&
+                   position.z < _matrixSize - 1 &&
+                   position.x > 0 &&
+                   position.z > 0)
             {
-                x += directionX;
-                z += directionZ;
-
-                MatrixCell checkedCell = _matrix[x, z];
+                position += forward;
+                MatrixCell checkedCell = _matrix[position.x, position.z];
 
                 if (checkedCell.State == MatrixCellStates.Free)
                     continue;
@@ -96,23 +88,23 @@ namespace Scripts.Cars.Matrix
                 if (checkedCell.Direction == -forward)
                     return true;
 
-                if (_barrierCheckedList.Any(coord => coord.x == x && coord.z == z))
+                if (_barrierCheckedList.Any(coord => coord.x == position.x && coord.z == position.z))
                     return true;
 
                 if (checkedCell.Direction == forward)
                     continue;
 
-                if (HasBarrier(checkedCell.Direction, x, z))
+                if (HasBarrier(checkedCell.Direction, position))
                     return true;
             }
 
             return false;
         }
 
-        public bool MarixCellIsEmpty(float startX, float startZ)
+        public bool MarixCellIsEmpty(Vector3Int position)
         {
-            int x = (int)Mathf.Round(startX) + MatrixCenter;
-            int z = (int)Mathf.Round(startZ) + MatrixCenter;
+            int x = position.x + MatrixCenter;
+            int z = position.z + MatrixCenter;
 
             return _matrix[x, z].State != MatrixCellStates.Taken;
         }
@@ -141,18 +133,19 @@ namespace Scripts.Cars.Matrix
 
         public bool CanLeaveParking(ArrowCar car)
         {
-            int x = car.ForwardX;
-            int z = car.ForwardZ;
+            Vector2Int forward = car.Forward;
 
-            while (x < _matrixSize && z < _matrixSize && x >= 0 && z >= 0)
+            while (forward.x < _matrixSize &&
+                   forward.y < _matrixSize &&
+                   forward.x >= 0 &&
+                   forward.y >= 0)
             {
-                if (_matrix[x, z].State != MatrixCellStates.Free)
+                if (_matrix[forward.x, forward.y].State != MatrixCellStates.Free)
                 {
                     return false;
                 }
 
-                x += car.DirectionX;
-                z += car.DirectionZ;
+                forward += car.Direction;
             }
 
             return true;
@@ -160,15 +153,12 @@ namespace Scripts.Cars.Matrix
 
         public void ClearCarPlace(ArrowCar car)
         {
-            int x = car.X;
-            int z = car.Z;
+            Vector2Int location = car.Location;
 
-            for (int i = 0; i < car.Type.Length; i++)
+            for (int i = 0; i < car.Specification.Length; i++)
             {
-                _matrix[x, z].Clear();
-
-                x += car.DirectionX;
-                z += car.DirectionZ;
+                _matrix[location.x, location.y].Clear();
+                location += car.Direction;
             }
         }
     }

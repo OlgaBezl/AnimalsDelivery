@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using UnityEngine;
 using DG.Tweening;
 using Scripts.Enviroment;
 using Scripts.Helpers;
+using UnityEngine;
 
 namespace Scripts.Effects
 {
@@ -38,7 +38,7 @@ namespace Scripts.Effects
             {
                 float angle = angleStep * i;
                 Vector2 localPosition = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * _radius;
-                Vector3 newPosition = _parts[i].transform.position + 
+                Vector3 newPosition = _parts[i].transform.position +
                     new Vector3(localPosition.x, localPosition.y + _height, 0);
 
                 DOTween.Sequence().

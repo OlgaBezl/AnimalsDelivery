@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using YG;
+using Scripts.Progress;
 using Scripts.UI;
 using Scripts.UI.Buttons;
-using Scripts.Progress;
+using UnityEngine;
+using YG;
 
 namespace Scripts
 {

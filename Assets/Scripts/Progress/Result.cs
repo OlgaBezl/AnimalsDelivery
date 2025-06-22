@@ -1,8 +1,8 @@
 using System;
-using UnityEngine;
 using Scripts.Cars;
 using Scripts.Cars.Containers;
 using Scripts.Cars.Model;
+using UnityEngine;
 using YG;
 
 namespace Scripts.Progress
@@ -67,7 +67,7 @@ namespace Scripts.Progress
 
         private void CarLeftParking(CarWithSeats car)
         {
-            _lastSeatsCount -= car.Type.SeatsCount;
+            _lastSeatsCount -= car.Specification.SeatsCount;
             _occupiedSeatsCount -= car.FreeSeatsCount;
             _currentPercent = (int)Mathf.Round((float)_occupiedSeatsCount * _maxPercent / (float)_totalSeatsCount);
 

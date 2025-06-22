@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using Scripts.Animals;
 using Scripts.Cars;
 using Scripts.Cars.Containers;
 using Scripts.Cars.Seats;
 using Scripts.Helpers;
-using Scripts.UI.Buttons;
+using UnityEngine;
 
 namespace Scripts.Queues
 {
@@ -17,7 +16,6 @@ namespace Scripts.Queues
         [SerializeField] private CarCololrsList _carCololrsList;
         [SerializeField] private SecondParking _parking;
         [SerializeField] private int _length = 20;
-        [SerializeField] private AddCarButton _addCarButton;
 
         private float _zOffset;
 
@@ -40,9 +38,6 @@ namespace Scripts.Queues
 
             if (_length <= 0)
                 throw new ArgumentOutOfRangeException(nameof(_length));
-
-            if (_addCarButton == null)
-                throw new NullReferenceException(nameof(_addCarButton));
         }
 
         public override void StartLevel()
@@ -78,16 +73,6 @@ namespace Scripts.Queues
             TryPutAnimalToCar();
         }
 
-        private List<Tuple<int, int>> GetColors()
-        {
-            return Queue.Select(animal => new Tuple<int, int>(animal.ColorIndex, 1)).ToList();
-        }
-
-        public int GetFirstColorIndex()
-        {
-            return Queue.Count > 0 ? Queue.First().ColorIndex : ColorPallet.GrayIndex;
-        }
-
         public bool TryPutAnimalToCar()
         {
             if (QueueIsMoving)
@@ -111,6 +96,11 @@ namespace Scripts.Queues
             MoveQueue(_zOffset);
 
             return true;
+        }
+
+        private List<Tuple<int, int>> GetColors()
+        {
+            return Queue.Select(animal => new Tuple<int, int>(animal.ColorIndex, 1)).ToList();
         }
     }
 }

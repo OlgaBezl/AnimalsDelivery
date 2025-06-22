@@ -1,10 +1,10 @@
 using System;
-using Scripts.Cars.Seats;
 using DG.Tweening;
-using UnityEngine;
+using Scripts.Cars.Seats;
 using Scripts.Enviroment;
 using Scripts.Helpers;
 using Scripts.Queues;
+using UnityEngine;
 
 namespace Scripts.Animals
 {
@@ -14,12 +14,12 @@ namespace Scripts.Animals
         [SerializeField] private float _rotateDuration = 0.25f;
         [SerializeField] private Animator _animator;
 
-        private string _danceAnimationName = "Joy";
-        private string _despondAnimationName = "Sad";
-
         [field: SerializeField] public float Speed { get; private set; } = 10f;
         [field: SerializeField] public int ColorIndex { get; private set; }
         [field: SerializeField] public float Length { get; private set; } = 0.35f;
+
+        private string _danceAnimationName = "Joy";
+        private string _despondAnimationName = "Sad";
 
         public event Action<IQueueItem> WasMovedInQueue;
 

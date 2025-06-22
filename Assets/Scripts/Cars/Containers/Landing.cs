@@ -27,10 +27,10 @@ namespace Scripts.Cars.Containers
             _parking.CarWasParked += ParkedCarInQueue;
         }
 
-        public void FinishLevel()
+        public void Unload()
         {
-            _animalQueue.FinishLevel();
-            _parking.FinishLevel();
+            _animalQueue.Unload();
+            _parking.Unload();
 
             _parking.CarWasParked -= ParkedCarInQueue;
         }

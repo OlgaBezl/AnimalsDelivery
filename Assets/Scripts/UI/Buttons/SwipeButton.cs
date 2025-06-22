@@ -1,5 +1,5 @@
-using UnityEngine;
 using Scripts.UI.Panels;
+using UnityEngine;
 
 namespace Scripts.UI.Buttons
 {

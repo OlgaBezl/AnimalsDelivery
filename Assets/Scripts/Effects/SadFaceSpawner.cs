@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using DG.Tweening;
-using UnityEngine;
-using Scripts.Helpers;
 using Scripts.Enviroment;
+using Scripts.Helpers;
+using UnityEngine;
 
 namespace Scripts.Effects
 {

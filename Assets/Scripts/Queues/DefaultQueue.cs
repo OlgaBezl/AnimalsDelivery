@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using Scripts.Helpers;
+using UnityEngine;
 
 namespace Scripts.Queues
 {
@@ -36,7 +36,7 @@ namespace Scripts.Queues
             Queue = new Queue<T>();
         }
 
-        public void FinishLevel()
+        public void Unload()
         {
             for (int i = 0; i < _container.childCount; i++)
             {
@@ -83,13 +83,13 @@ namespace Scripts.Queues
             lastItem.WasMovedInQueue += ContinueMoveQueue;
         }
 
+        public abstract void FirstAction();
+
         private void ContinueMoveQueue(IQueueItem item)
         {
             QueueIsMoving = false;
             item.WasMovedInQueue -= ContinueMoveQueue;
             FirstAction();
         }
-
-        public abstract void FirstAction();
     }
 }

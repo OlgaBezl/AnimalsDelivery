@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
-using DG.Tweening;
-using UnityEngine;
 using Scripts.Helpers;
+using UnityEngine;
 
 namespace Scripts.Enviroment
 {
     public class ObjectPainter : MonoBehaviour
     {
         [SerializeField] private List<MeshRenderer> _meshRenderers;
-        [field: SerializeField] public bool IsMainMaterial { get; private set; }
 
         public const float HorizontalColorTextureOffset = 0.1666f;
+
+        [field: SerializeField] public bool IsMainMaterial { get; private set; }
 
         public int ColorIndex { get; private set; }
 
@@ -67,28 +67,6 @@ namespace Scripts.Enviroment
                     mesh.material = new Material(mesh.material);
 
                 mesh.material.mainTextureOffset = new Vector2(horizontalTextureOffset, 0);
-            }
-        }
-
-        public void HighlightOn()
-        {
-            float duration = 0.75f;
-            float minLumin = 0.5f;
-            float maxLumin = 1f;
-            string propertyName = "_MinLight";
-
-            foreach (MeshRenderer mesh in _meshRenderers)
-            {
-                if (mesh.material == null)
-                    mesh.material = new Material(mesh.material);
-
-                DOTween.Sequence().
-                Append(mesh.material.DOFloat(maxLumin, propertyName, duration)).
-                Append(mesh.material.DOFloat(minLumin, propertyName, duration)).
-                Append(mesh.material.DOFloat(maxLumin, propertyName, duration)).
-                Append(mesh.material.DOFloat(minLumin, propertyName, duration)).
-                Append(mesh.material.DOFloat(maxLumin, propertyName, duration)).
-                Append(mesh.material.DOFloat(minLumin, propertyName, duration));
             }
         }
 

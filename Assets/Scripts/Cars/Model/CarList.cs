@@ -17,7 +17,7 @@ namespace Scripts.Cars.Model
             _cars = new List<CarModel>();
         }
 
-        public void Clear()
+        public void Unload()
         {
             _cars = null;
         }
@@ -68,7 +68,7 @@ namespace Scripts.Cars.Model
                 return new List<CarModel>();
             }
 
-            if (_cars.All(car => car.Status == CarModelStatus.SecondParkingStay || 
+            if (_cars.All(car => car.Status == CarModelStatus.SecondParkingStay ||
                                  car.Status == CarModelStatus.SecondParkingLeft))
             {
                 if (_cars.Any(car => car.Status == CarModelStatus.SecondParkingStay && !car.IsLinked))

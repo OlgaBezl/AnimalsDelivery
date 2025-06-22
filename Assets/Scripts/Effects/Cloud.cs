@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 namespace Scripts.Effects
@@ -9,13 +8,7 @@ namespace Scripts.Effects
 
         private void Awake()
         {
-            StartCoroutine(DestroyAfterSomeSecond());
-        }
-
-        private IEnumerator DestroyAfterSomeSecond()
-        {
-            yield return new WaitForSeconds(seconds);
-            Destroy(gameObject);
+            Destroy(gameObject, seconds);
         }
     }
 }

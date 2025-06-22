@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
+using Scripts.Enviroment;
 using UnityEngine;
 using YG;
-using Scripts.Enviroment;
 
 namespace Scripts.Progress
 {
@@ -10,13 +10,6 @@ namespace Scripts.Progress
     {
         private int _biomStep = 3;
         private string _leaderboardName = "AnimalDeliveryLeaderboard";
-
-        public int LevelNumber { get; private set; }
-        public BiomType Biom { get; private set; }
-        public int Points { get; private set; }
-        public int StarsCount { get; private set; }
-        public bool IsEnabled { get; private set; }
-        public int UserPoints { get; private set; }
 
         public LevelInfo(int levelNumber, int points, int userPoints)
         {
@@ -28,6 +21,13 @@ namespace Scripts.Progress
             StarsCount = GetStarCount(UserPoints);
             IsEnabled = GetEnabled();
         }
+
+        public int LevelNumber { get; private set; }
+        public BiomType Biom { get; private set; }
+        public int Points { get; private set; }
+        public int StarsCount { get; private set; }
+        public bool IsEnabled { get; private set; }
+        public int UserPoints { get; private set; }
 
         public void TryUpdateResult(int userPoints)
         {
@@ -46,6 +46,21 @@ namespace Scripts.Progress
         {
             IsEnabled = true;
             YandexGame.savesData.UpdateCurrentLevel(this);
+        }
+
+        public int GetStarCount(int userPoints)
+        {
+            int maxPercent = 100;
+            float currentPercent = Mathf.Round((float)userPoints * maxPercent / (float)Points);
+
+            if (currentPercent < 50)
+                return 0;
+            else if (currentPercent < 70)
+                return 1;
+            else if (currentPercent < 90)
+                return 2;
+            else
+                return 3;
         }
 
         private void Save()
@@ -85,21 +100,6 @@ namespace Scripts.Progress
                 FirstOrDefault(level => level.LevelNumber == LevelNumber - 1);
 
             return lastLevel.StarsCount > 1;
-        }
-
-        public int GetStarCount(int userPoints)
-        {
-            int maxPercent = 100;
-            float currentPercent = Mathf.Round((float)userPoints * maxPercent / (float)Points);
-
-            if (currentPercent < 50)
-                return 0;
-            else if (currentPercent < 70)
-                return 1;
-            else if (currentPercent < 90)
-                return 2;
-            else
-                return 3;
         }
     }
 }

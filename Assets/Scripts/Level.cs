@@ -3,12 +3,12 @@ using Agava.YandexGames;
 using Scripts.Cars.Containers;
 using Scripts.Cars.Generators;
 using Scripts.Cars.Model;
-using UnityEngine;
-using YG;
 using Scripts.Enviroment;
 using Scripts.Helpers;
-using Scripts.Queues;
 using Scripts.Progress;
+using Scripts.Queues;
+using UnityEngine;
+using YG;
 
 namespace Scripts
 {
@@ -71,9 +71,9 @@ namespace Scripts
         public void Unload()
         {
             YandexGame.GameplayStop();
-            _carGenerator.FinishLevel();
-            _carQueue.FinishLevel();
-            _landing.FinishLevel();
+            _carGenerator.Unload();
+            _carQueue.Unload();
+            _landing.Unload();
             _isActive = false;
         }
     }

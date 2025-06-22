@@ -1,9 +1,9 @@
 using System;
-using UnityEngine;
 using Scripts.Cars.Model;
 using Scripts.Effects;
-using Scripts.Helpers;
 using Scripts.Enviroment;
+using Scripts.Helpers;
+using UnityEngine;
 
 namespace Scripts.Cars
 {
@@ -13,7 +13,7 @@ namespace Scripts.Cars
 
         [field: SerializeField] public float RotateDuration = 1f;
         [field: SerializeField] public float Speed { get; private set; } = 10f;
-        [field: SerializeField] public CarType Type { get; private set; }
+        [field: SerializeField] public CarSpecification Specification { get; private set; }
         [field: SerializeField] protected Trace Trace { get; set; }
 
         public CarModel Model { get; private set; }
@@ -26,8 +26,8 @@ namespace Scripts.Cars
             if (_objectPainter == null)
                 throw new NullReferenceException(nameof(_objectPainter));
 
-            if (Type == null)
-                throw new NullReferenceException(nameof(Type));
+            if (Specification == null)
+                throw new NullReferenceException(nameof(Specification));
 
             if (Speed <= 0)
                 throw new ArgumentOutOfRangeException(nameof(Speed));
@@ -62,11 +62,6 @@ namespace Scripts.Cars
         {
             CanLeftParking = true;
             _objectPainter.PaintByIndex(ColorIndex, CurrentColorIndex);
-        }
-
-        public void Highlight()
-        {
-            _objectPainter.HighlightOn();
         }
     }
 }

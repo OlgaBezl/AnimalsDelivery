@@ -1,16 +1,16 @@
 using System;
+using Scripts.Progress;
+using Scripts.UI.Panels;
 using UnityEngine;
 using YG;
-using Scripts.UI.Panels;
-using Scripts.Progress;
 
 namespace Scripts.UI.Buttons
 {
     public class CommonStartButton : DefaultButton
     {
-        [field: SerializeField] public UIPanel Panel { get; private set; }
-
         public event Action<LevelInfo> Click;
+
+        [field: SerializeField] public UIPanel Panel { get; private set; }
 
         protected override void OnClick()
         {

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using Scripts.UI.Panels;
+using UnityEngine;
 
 namespace Scripts.Cars.CarPlaces
 {
@@ -19,7 +19,7 @@ namespace Scripts.Cars.CarPlaces
 
         public event Action NewPlaceUnlocked;
 
-        public int UnlockedPlacesCount => 
+        public int UnlockedPlacesCount =>
             _carPlacesInQueue == null ? 0 : _carPlacesInQueue.Count(place => !place.IsLocked);
 
         private void OnValidate()
@@ -50,7 +50,7 @@ namespace Scripts.Cars.CarPlaces
             }
         }
 
-        public void FinishLevel()
+        public void Unload()
         {
             foreach (CarPlace place in _carPlacesInQueue)
             {
@@ -68,7 +68,7 @@ namespace Scripts.Cars.CarPlaces
 
         private void PlaceUnlock()
         {
-            NewPlaceUnlocked.Invoke();
+            NewPlaceUnlocked?.Invoke();
         }
     }
 }

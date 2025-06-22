@@ -2,8 +2,8 @@ namespace Scripts.UI.Panels
 {
     public enum LoadPageType
     {
-        SelectedLevel,
-        NextPage,
-        PreviousPage
+        SelectedLevel = 0,
+        NextPage = 1,
+        PreviousPage = 2
     }
 }

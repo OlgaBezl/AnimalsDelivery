@@ -1,6 +1,6 @@
+using Scripts.Progress;
 using UnityEngine;
 using UnityEngine.UI;
-using Scripts.Progress;
 
 namespace Scripts.UI
 {

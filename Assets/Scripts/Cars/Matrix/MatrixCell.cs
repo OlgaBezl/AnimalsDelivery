@@ -5,9 +5,9 @@ namespace Scripts.Cars.Matrix
     public class MatrixCell
     {
         public MatrixCellStates State { get; private set; }
-        public Vector3 Direction { get; private set; }
+        public Vector3Int Direction { get; private set; }
 
-        public bool TryMark(Vector3 direction)
+        public bool TryMark(Vector3Int direction)
         {
             if (State == MatrixCellStates.Taken)
             {
@@ -39,7 +39,7 @@ namespace Scripts.Cars.Matrix
         public void Clear()
         {
             State = MatrixCellStates.Free;
-            Direction = Vector3.zero;
+            Direction = Vector3Int.zero;
         }
     }
 }

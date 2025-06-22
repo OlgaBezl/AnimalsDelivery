@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using Scripts.Cars.CarPlaces;
 using Scripts.Cars.Model;
 using Scripts.Effects;
+using UnityEngine;
 
 namespace Scripts.Cars.Containers
 {
@@ -42,12 +42,12 @@ namespace Scripts.Cars.Containers
             _carPlacesQueue.NewPlaceUnlocked += NewPlaceUnlock;
         }
 
-        public void FinishLevel()
+        public void Unload()
         {
             _carList.NeedShowHint -= ShowHintAfterDelay;
 
             _carsInQueue = null;
-            _carPlacesQueue.FinishLevel();
+            _carPlacesQueue.Unload();
             _carPlacesQueue.NewPlaceUnlocked -= NewPlaceUnlock;
         }
 
@@ -71,6 +71,7 @@ namespace Scripts.Cars.Containers
             carWithSeats.StartLeftParking += CarStartLeftParking;
             carWithSeats.LeftParking += CarLeftParking;
             carWithSeats.MoveToParkingPlace(freePlace, _endPoint);
+
             return true;
         }
 
@@ -82,26 +83,27 @@ namespace Scripts.Cars.Containers
                 return false;
 
             freePlace.Take();
-            carWithSeats.Model.StayOnSecondParking();
+            carWithSeats.Model.ChangeStatus(CarModelStatus.SecondParkingStay);
 
             _carsInQueue.Add(carWithSeats);
             carWithSeats.WasParked += ParkedCar;
             carWithSeats.StartLeftParking += CarStartLeftParking;
             carWithSeats.LeftParking += CarLeftParking;
             carWithSeats.TeleportToParkingPlace(freePlace, _endPoint);
+
             return true;
         }
 
         public CarWithSeats GetFreeCar(int colorIndex)
         {
             return _carsInQueue.FirstOrDefault(car =>
-            car.State == CarWithSeatsState.Parked && car.HasFreeSeats && car.ColorIndex == colorIndex);
+            car.State == CarState.Parked && car.HasFreeSeats && car.ColorIndex == colorIndex);
         }
 
         private void ParkedCar(CarWithSeats car)
         {
             car.WasParked -= ParkedCar;
-            car.Model.StayOnSecondParking();
+            car.Model.ChangeStatus(CarModelStatus.SecondParkingStay);
             CarWasParked?.Invoke(car);
 
             _carList.FindHintCarAndInvokeAction();
@@ -110,7 +112,7 @@ namespace Scripts.Cars.Containers
         private void CarStartLeftParking(CarWithSeats car)
         {
             car.StartLeftParking -= CarStartLeftParking;
-            car.Model.LeftSecondParking();
+            car.Model.ChangeStatus(CarModelStatus.SecondParkingLeft);
             _carsInQueue.Remove(car);
         }
 
