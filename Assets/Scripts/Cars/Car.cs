@@ -52,13 +52,13 @@ namespace Scripts.Cars
             _objectPainter.SetShaderMaterialTexture(texture);
         }
 
-        public void GrayModeOn()
+        public void TurnOnGrayMode()
         {
             CanLeftParking = false;
             _objectPainter.PaintByIndex(ColorPallet.GrayIndex, CurrentColorIndex);
         }
 
-        public virtual void GrayModeOff()
+        public virtual void TurnOffGrayMode()
         {
             CanLeftParking = true;
             _objectPainter.PaintByIndex(ColorIndex, CurrentColorIndex);

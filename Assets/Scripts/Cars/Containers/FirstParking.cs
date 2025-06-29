@@ -29,7 +29,7 @@ namespace Scripts.Cars.Containers
                 throw new NullReferenceException(nameof(_cloud));
         }
 
-        public void StartLevel(CarList carList)
+        public void Load(CarList carList)
         {
             _cars = new List<ArrowCar>();
             _carList = carList;
@@ -46,28 +46,28 @@ namespace Scripts.Cars.Containers
                 throw new ArgumentNullException(nameof(car));
 
             _cars.Add(car);
-            car.ParkingStartLeaving += CarStartLeaveParking;
-            car.ParkingFinalLeaved += CarFinishLeaveParking;
+            car.ParkingStartLeaving += StartDriveCarOut;
+            car.ParkingFinalLeaved += FinishDriveCarOut;
         }
 
         public void UpdateGrayMode()
         {
             foreach (ArrowCar car in _cars)
             {
-                if (_carMatrix.CanLeaveParking(car))
+                if (_carMatrix.CkeckIfCanLeaveParking(car))
                 {
-                    car.GrayModeOff();
+                    car.TurnOffGrayMode();
                 }
                 else
                 {
-                    car.GrayModeOn();
+                    car.TurnOnGrayMode();
                 }
             }
         }
 
-        private void CarStartLeaveParking(ArrowCar car)
+        private void StartDriveCarOut(ArrowCar car)
         {
-            car.ParkingStartLeaving -= CarStartLeaveParking;
+            car.ParkingStartLeaving -= StartDriveCarOut;
             car.Model.ChangeStatus(CarModelStatus.FirstParkingLast);
 
             _cars.Remove(car);
@@ -75,11 +75,11 @@ namespace Scripts.Cars.Containers
             UpdateGrayMode();
         }
 
-        private void CarFinishLeaveParking(ArrowCar car)
+        private void FinishDriveCarOut(ArrowCar car)
         {
-            car.ParkingFinalLeaved -= CarFinishLeaveParking;
+            car.ParkingFinalLeaved -= FinishDriveCarOut;
             car.Model.ChangeStatus(CarModelStatus.QueueWait);
-            _carList.FindHintCarAndInvokeAction();
+            _carList.ShowHintIfNeeded();
 
             Destroy(car.gameObject);
             Instantiate(_cloud, car.transform.position, car.transform.rotation);

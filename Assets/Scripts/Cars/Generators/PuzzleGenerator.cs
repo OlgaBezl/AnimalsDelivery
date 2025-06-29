@@ -50,14 +50,14 @@ namespace Scripts.Cars.Generators
                 throw new NullReferenceException(nameof(_container));
         }
 
-        public void StartLevel(LevelInfo levelInfo, CarList carList)
+        public void Load(LevelInfo levelInfo, CarList carList)
         {
             _container.rotation = Quaternion.identity;
             _currentPoints = levelInfo.Points;
             _carList = carList;
             _queueForGenerate = new Queue<Car>();
-            _carMatrix.StartLevel();
-            _firstParking.StartLevel(carList);
+            _carMatrix.Load();
+            _firstParking.Load(carList);
             RepaintCarPrefabs(levelInfo.Biom);
 
             GenerateCar(GetRandomPrefab(), Rotation.GetRandomRotationWithoutLimit(), Vector3Int.zero);
@@ -144,7 +144,7 @@ namespace Scripts.Cars.Generators
         {
             Vector3Int roundStartPosition = RoundVector(startPosition);
 
-            if (_carMatrix.MarixCellIsEmpty(roundStartPosition) == false)
+            if (_carMatrix.CheckIfMarixCellIsEmpty(roundStartPosition) == false)
             {
                 return false;
             }
@@ -182,16 +182,14 @@ namespace Scripts.Cars.Generators
             return cars[UnityEngine.Random.Range(0, cars.Count)];
         }
 
-        private Car GenerateCar(ArrowCar prefab, RotationType rotationType, Vector3Int lastCarOffset)
+        private void GenerateCar(ArrowCar prefab, RotationType rotationType, Vector3Int lastCarOffset)
         {
             int colorIndex = ColorPallet.GetRandomColorIndex();
             Vector3 newPosition = transform.position + lastCarOffset;
             Vector3Int forward = Rotation.ConvertRotationToDirection(rotationType);
 
             if (!_carMatrix.CanGenerateCarByPosition(prefab.Specification.Length, forward, RoundVector(newPosition)))
-            {
-                return null;
-            }
+                return;
 
             _counter++;
             CarModel carModel = _carList.AddCar(colorIndex, prefab.Specification.SeatsCount);
@@ -207,8 +205,6 @@ namespace Scripts.Cars.Generators
             _carMatrix.FillMatrix();
             _currentPoints -= car.Specification.SeatsCount;
             _queueForGenerate.Enqueue(car);
-
-            return car;
         }
 
         private Vector3Int RoundVector(Vector3 vector3)

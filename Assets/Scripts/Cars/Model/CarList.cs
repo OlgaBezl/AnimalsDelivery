@@ -51,7 +51,7 @@ namespace Scripts.Cars.Model
             _maxParkingPlaces = parkingPlaces;
         }
 
-        public void FindHintCarAndInvokeAction()
+        public void ShowHintIfNeeded()
         {
             IReadOnlyList<CarModel> cars = GetHintCars();
 

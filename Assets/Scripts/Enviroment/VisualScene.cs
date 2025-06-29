@@ -11,7 +11,7 @@ namespace Scripts.Enviroment
 
         private BiomType _currentBiomType = BiomType.Autumn;
 
-        public void StartLevel(BiomType biomType)
+        public void Load(BiomType biomType)
         {
             _background.SetTone(_biomPainter.GetBiom(biomType).Tone);
 

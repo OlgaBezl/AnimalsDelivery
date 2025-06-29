@@ -13,12 +13,14 @@ namespace Scripts.Helpers
         {
             if (rotationType == RotationType.Zero)
                 return Vector3Int.forward;
-            else if (rotationType == RotationType.Half)
+            
+            if (rotationType == RotationType.Half)
                 return Vector3Int.back;
-            else if (rotationType == RotationType.Quarter)
+            
+            if (rotationType == RotationType.Quarter)
                 return Vector3Int.right;
-            else
-                return Vector3Int.left;
+            
+            return Vector3Int.left;
         }
 
         public static RotationType GetRandomRotationWithoutLimit()

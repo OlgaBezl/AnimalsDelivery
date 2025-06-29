@@ -1,7 +1,7 @@
 using Scripts.UI.Panels;
 using UnityEngine;
 
-namespace Scripts
+namespace Scripts.Levels
 {
     public class GameRoot : MonoBehaviour
     {

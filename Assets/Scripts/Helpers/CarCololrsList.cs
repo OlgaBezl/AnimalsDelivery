@@ -27,7 +27,7 @@ namespace Scripts.Helpers
                 throw new NullReferenceException(nameof(_secondParking));
         }
 
-        public void StartLevel(CarList list)
+        public void Load(CarList list)
         {
             _carList = list;
         }

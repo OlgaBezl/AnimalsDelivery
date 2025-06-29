@@ -4,7 +4,7 @@ using Scripts.UI;
 using Scripts.UI.Panels;
 using UnityEngine;
 
-namespace Scripts
+namespace Scripts.Levels
 {
     public class LevelFinish : MonoBehaviour
     {

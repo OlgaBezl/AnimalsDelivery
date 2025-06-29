@@ -62,7 +62,7 @@ namespace Scripts.Cars
             foreach (Seat seat in _seatsContainer.GetComponentsInChildren<Seat>())
             {
                 _seats.Add(seat);
-                seat.Taked += SeatWasTaked;
+                seat.Taked += TryLeaveParking;
             }
         }
 
@@ -93,19 +93,6 @@ namespace Scripts.Cars
                 Append(_transform.DOMove(carPlace.transform.position - carLengthOffset, moveDurationAfterTurn)).
                 SetEase(Ease.Linear).
                 onComplete += () => Park();
-        }
-
-        public void TeleportToParkingPlace(CarPlace carPlace, Transform exitParkingPoint)
-        {
-            if (carPlace == null)
-                throw new NullReferenceException(nameof(carPlace));
-
-            if (exitParkingPoint == null)
-                throw new NullReferenceException(nameof(exitParkingPoint));
-
-            State = CarState.GoingToParking;
-            _currentParkingPlace = carPlace;
-            _exitParkingPoint = exitParkingPoint;
         }
 
         public void Park()
@@ -183,9 +170,9 @@ namespace Scripts.Cars
             LeftParking?.Invoke(this);
         }
 
-        private void SeatWasTaked(Seat seat)
+        private void TryLeaveParking(Seat seat)
         {
-            seat.Taked += SeatWasTaked;
+            seat.Taked += TryLeaveParking;
 
             if (HasFreeSeats == false)
             {

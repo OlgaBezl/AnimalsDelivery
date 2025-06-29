@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Scripts.Helpers;
@@ -13,7 +12,6 @@ namespace Scripts.Queues
         [SerializeField] public Transform _startPoint;
         [SerializeField] public Transform _endPoint;
         [SerializeField] private Transform _container;
-        [SerializeField] protected float _additionalZOffset = 0.2f;
 
         protected Queue<T> Queue;
         protected bool QueueIsMoving;
@@ -30,7 +28,7 @@ namespace Scripts.Queues
                 throw new NullReferenceException(nameof(_endPoint));
         }
 
-        public virtual void StartLevel()
+        public virtual void Load()
         {
             gameObject.SetActive(true);
             Queue = new Queue<T>();

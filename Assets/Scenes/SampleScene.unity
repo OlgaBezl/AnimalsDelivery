@@ -3312,7 +3312,6 @@ MonoBehaviour:
   _startPoint: {fileID: 961802586}
   _endPoint: {fileID: 961802586}
   _container: {fileID: 1725217785}
-  _additionalZOffset: 0.2
   _carPrefabs:
   - {fileID: 9016504920674323045, guid: 4e62a2dde26a160459bac958d2d81759, type: 3}
   - {fileID: 9016504920674323045, guid: 75999bef9a945f045a2885aaf438a227, type: 3}
@@ -26915,7 +26914,6 @@ MonoBehaviour:
   _startPoint: {fileID: 887069814}
   _endPoint: {fileID: 777768153}
   _container: {fileID: 1731185212}
-  _additionalZOffset: 0.2
   _prefabs:
   - {fileID: 3005115966263330538, guid: 793957cc04b395b44a0e106815e06837, type: 3}
   - {fileID: 3005115966263330538, guid: 3aaa9e829d98ad44bba738412d82db94, type: 3}

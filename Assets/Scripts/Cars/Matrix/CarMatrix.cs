@@ -15,7 +15,8 @@ namespace Scripts.Cars.Matrix
         private Vector3Int _matrixCenterOffset;
 
         public int MatrixCenter { get; private set; }
-        public void StartLevel()
+        
+        public void Load()
         {
             _matrix = new MatrixCell[_matrixSize, _matrixSize];
             _barrierCheckedList = new List<Vector3Int>();
@@ -101,7 +102,7 @@ namespace Scripts.Cars.Matrix
             return false;
         }
 
-        public bool MarixCellIsEmpty(Vector3Int position)
+        public bool CheckIfMarixCellIsEmpty(Vector3Int position)
         {
             int x = position.x + MatrixCenter;
             int z = position.z + MatrixCenter;
@@ -131,7 +132,7 @@ namespace Scripts.Cars.Matrix
             }
         }
 
-        public bool CanLeaveParking(ArrowCar car)
+        public bool CkeckIfCanLeaveParking(ArrowCar car)
         {
             Vector2Int forward = car.Forward;
 

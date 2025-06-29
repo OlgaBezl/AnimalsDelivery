@@ -52,11 +52,11 @@ namespace Scripts.Helpers
         {
             if (isPlaying)
             {
-                SoundOff();
+                TurnOffSound();
             }
             else
             {
-                SoundOn();
+                TurnOnSound();
             }
         }
 
@@ -68,23 +68,23 @@ namespace Scripts.Helpers
             }
         }
 
-        private void SoundOn()
+        private void TurnOnSound()
         {
             _audioSource.UnPause();
 
             foreach (SoundButton button in buttons)
             {
-                button.SoundOn();
+                button.TurnOnSound();
             }
         }
 
-        private void SoundOff()
+        private void TurnOffSound()
         {
             _audioSource.Pause();
 
             foreach (SoundButton button in buttons)
             {
-                button.SoundOff();
+                button.TurnOffSound();
             }
         }
     }

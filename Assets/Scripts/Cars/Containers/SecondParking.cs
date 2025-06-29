@@ -18,7 +18,9 @@ namespace Scripts.Cars.Containers
         private List<CarWithSeats> _carsInQueue;
         private CarList _carList;
         private bool _hintCarsJumping;
-
+        
+        public bool HasFreePlace => _carPlacesQueue?.GetFreePlace() != null;
+        
         public event Action<CarWithSeats> CarWasParked;
         public event Action<CarWithSeats> CarLeft;
         public event Action NewPlaceUnlocked;
@@ -32,14 +34,14 @@ namespace Scripts.Cars.Containers
                 throw new NullReferenceException(nameof(_cloud));
         }
 
-        public void StartLevel(CarList carList)
+        public void Load(CarList carList)
         {
             _carList = carList;
             _carList.NeedShowHint += ShowHintAfterDelay;
 
             _carsInQueue = new List<CarWithSeats>();
-            _carPlacesQueue.StartLevel();
-            _carPlacesQueue.NewPlaceUnlocked += NewPlaceUnlock;
+            _carPlacesQueue.Load();
+            _carPlacesQueue.UnlockedNewPlace += UnlockUnlockedNewPlace;
         }
 
         public void Unload()
@@ -48,50 +50,24 @@ namespace Scripts.Cars.Containers
 
             _carsInQueue = null;
             _carPlacesQueue.Unload();
-            _carPlacesQueue.NewPlaceUnlocked -= NewPlaceUnlock;
+            _carPlacesQueue.UnlockedNewPlace -= UnlockUnlockedNewPlace;
         }
 
-        public bool HasFreePlace()
-        {
-            return _carPlacesQueue.GetFreePlace() != null;
-        }
-
-        public bool TakePlace(CarWithSeats carWithSeats)
+        public void TakePlace(CarWithSeats carWithSeats)
         {
             CarPlace freePlace = _carPlacesQueue.GetFreePlace();
 
             if (freePlace == null)
-                return false;
+                return;
 
             carWithSeats.Model.MoveToSecondParking(freePlace.OrderNumber);
             freePlace.Take();
 
             _carsInQueue.Add(carWithSeats);
-            carWithSeats.WasParked += ParkedCar;
-            carWithSeats.StartLeftParking += CarStartLeftParking;
-            carWithSeats.LeftParking += CarLeftParking;
+            carWithSeats.WasParked += ParkCar;
+            carWithSeats.StartLeftParking += StartDriveCarOut;
+            carWithSeats.LeftParking += FinishDriveCarOut;
             carWithSeats.MoveToParkingPlace(freePlace, _endPoint);
-
-            return true;
-        }
-
-        public bool TakePlaceWithoutQueue(CarWithSeats carWithSeats)
-        {
-            CarPlace freePlace = _carPlacesQueue.GetFreePlace();
-
-            if (freePlace == null)
-                return false;
-
-            freePlace.Take();
-            carWithSeats.Model.ChangeStatus(CarModelStatus.SecondParkingStay);
-
-            _carsInQueue.Add(carWithSeats);
-            carWithSeats.WasParked += ParkedCar;
-            carWithSeats.StartLeftParking += CarStartLeftParking;
-            carWithSeats.LeftParking += CarLeftParking;
-            carWithSeats.TeleportToParkingPlace(freePlace, _endPoint);
-
-            return true;
         }
 
         public CarWithSeats GetFreeCar(int colorIndex)
@@ -100,31 +76,31 @@ namespace Scripts.Cars.Containers
             car.State == CarState.Parked && car.HasFreeSeats && car.ColorIndex == colorIndex);
         }
 
-        private void ParkedCar(CarWithSeats car)
+        private void ParkCar(CarWithSeats car)
         {
-            car.WasParked -= ParkedCar;
+            car.WasParked -= ParkCar;
             car.Model.ChangeStatus(CarModelStatus.SecondParkingStay);
             CarWasParked?.Invoke(car);
 
-            _carList.FindHintCarAndInvokeAction();
+            _carList.ShowHintIfNeeded();
         }
 
-        private void CarStartLeftParking(CarWithSeats car)
+        private void StartDriveCarOut(CarWithSeats car)
         {
-            car.StartLeftParking -= CarStartLeftParking;
+            car.StartLeftParking -= StartDriveCarOut;
             car.Model.ChangeStatus(CarModelStatus.SecondParkingLeft);
             _carsInQueue.Remove(car);
         }
 
-        private void CarLeftParking(CarWithSeats car)
+        private void FinishDriveCarOut(CarWithSeats car)
         {
-            car.LeftParking -= CarLeftParking;
+            car.LeftParking -= FinishDriveCarOut;
 
             Instantiate(_cloud, car.transform.position, car.transform.rotation);
             Destroy(car.gameObject);
             CarLeft?.Invoke(car);
 
-            _carList.FindHintCarAndInvokeAction();
+            _carList.ShowHintIfNeeded();
         }
 
         private void ShowHintAfterDelay()
@@ -136,7 +112,7 @@ namespace Scripts.Cars.Containers
             StartCoroutine(ShowHintWithDelay(3));
         }
 
-        private void NewPlaceUnlock()
+        private void UnlockUnlockedNewPlace()
         {
             _carList.UpdateParkingPlaces(_carPlacesQueue.UnlockedPlacesCount);
             NewPlaceUnlocked?.Invoke();

@@ -30,12 +30,12 @@ namespace Scripts.UI.Buttons
             Click?.Invoke();
         }
 
-        public void SoundOn()
+        public void TurnOnSound()
         {
             _image.sprite = _soundSptite;
         }
 
-        public void SoundOff()
+        public void TurnOffSound()
         {
             _image.sprite = _withoutSoundSptite;
         }

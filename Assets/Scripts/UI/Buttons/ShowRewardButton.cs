@@ -11,15 +11,15 @@ namespace Scripts.UI.Buttons
         protected override void OnClick()
         {
             YandexGame.RewVideoShow((int)RewardType.UnlockParkingPlace);
-            YandexGame.RewardVideoEvent += AfterReward;
+            YandexGame.RewardVideoEvent += TakeRewardAfterAd;
         }
 
-        private void AfterReward(int id)
+        private void TakeRewardAfterAd(int id)
         {
             if (id != (int)RewardType.UnlockParkingPlace)
                 return;
 
-            YandexGame.RewardVideoEvent -= AfterReward;
+            YandexGame.RewardVideoEvent -= TakeRewardAfterAd;
             IsShown?.Invoke(id);
         }
     }

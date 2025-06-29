@@ -40,12 +40,12 @@ namespace Scripts.Queues
                 throw new ArgumentOutOfRangeException(nameof(_length));
         }
 
-        public override void StartLevel()
+        public override void Load()
         {
             float currentOffset = 0;
             _zOffset = Vector3.Distance(_startPoint.position, _endPoint.position) / (_length - 1);
 
-            base.StartLevel();
+            base.Load();
 
             for (int i = 0; i < _length; i++)
             {

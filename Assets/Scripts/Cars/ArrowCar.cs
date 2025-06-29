@@ -61,9 +61,9 @@ namespace Scripts.Cars
             Direction = new Vector2Int(directionX, directionZ);
         }
 
-        public override void GrayModeOff()
+        public override void TurnOffGrayMode()
         {
-            base.GrayModeOff();
+            base.TurnOffGrayMode();
             Model.ChangeStatus(CarModelStatus.FirstParkingColor);
             _arrow.SetActive(true);
         }

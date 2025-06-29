@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Scripts.Cars;
@@ -23,9 +22,9 @@ namespace Scripts.Queues
                 throw new NullReferenceException(nameof(_parking));
         }
 
-        public override void StartLevel()
+        public override void Load()
         {
-            base.StartLevel();
+            base.Load();
             _parking.NewPlaceUnlocked += Unlock;
         }
 
@@ -48,9 +47,9 @@ namespace Scripts.Queues
 
             CarWithSeats carWithSeats = Spawn(prefab, carModel.ColorIndex, offset);
             carWithSeats.SetModel(carModel);
-            carWithSeats.StartLeftParking += CarLeftParking;
+            carWithSeats.StartLeftParking += DriveCarOut;
 
-            if (_parking.HasFreePlace())
+            if (_parking.HasFreePlace)
             {
                 _parking.TakePlace(carWithSeats);
                 MoveCarQueue();
@@ -70,11 +69,11 @@ namespace Scripts.Queues
             MoveQueue(zOffset);
         }
 
-        private void CarLeftParking(CarWithSeats carWithSeats)
+        private void DriveCarOut(CarWithSeats carWithSeats)
         {
-            carWithSeats.LeftParking -= CarLeftParking;
+            carWithSeats.LeftParking -= DriveCarOut;
 
-            if (Queue.Count > 0 && _parking.HasFreePlace())
+            if (Queue.Count > 0 && _parking.HasFreePlace)
             {
                 _parking.TakePlace(Queue.Peek());
                 MoveCarQueue();
@@ -83,7 +82,7 @@ namespace Scripts.Queues
 
         private void Unlock()
         {
-            if (Queue.Count > 0 && _parking.HasFreePlace())
+            if (Queue.Count > 0 && _parking.HasFreePlace)
             {
                 _parking.TakePlace(Queue.Peek());
                 MoveCarQueue();

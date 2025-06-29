@@ -10,7 +10,7 @@ using Scripts.Queues;
 using UnityEngine;
 using YG;
 
-namespace Scripts
+namespace Scripts.Levels
 {
     public class Level : MonoBehaviour
     {
@@ -57,12 +57,12 @@ namespace Scripts
             _carList = new CarList();
             _carList.Initialize();
 
-            _carCololrsList.StartLevel(_carList);
-            _carGenerator.StartLevel(levelInfo, _carList);
-            _carQueue.StartLevel();
-            _landing.StartLevel(_carList);
-            _result.StartLevel(levelInfo.Points, _carList);
-            _visualScene.StartLevel(levelInfo.Biom);
+            _carCololrsList.Load(_carList);
+            _carGenerator.Load(levelInfo, _carList);
+            _carQueue.Load();
+            _landing.Load(_carList);
+            _result.Load(levelInfo.Points, _carList);
+            _visualScene.Load(levelInfo.Biom);
 
             YandexGame.GameplayStart();
             _isActive = true;
@@ -74,6 +74,7 @@ namespace Scripts
             _carGenerator.Unload();
             _carQueue.Unload();
             _landing.Unload();
+            _result.Unload();
             _isActive = false;
         }
     }

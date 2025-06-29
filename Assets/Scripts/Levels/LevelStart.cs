@@ -7,7 +7,7 @@ using Scripts.UI.Buttons;
 using UnityEngine;
 using YG;
 
-namespace Scripts
+namespace Scripts.Levels
 {
     public class LevelStart : MonoBehaviour
     {

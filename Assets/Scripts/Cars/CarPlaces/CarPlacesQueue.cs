@@ -17,7 +17,7 @@ namespace Scripts.Cars.CarPlaces
 
         private List<CarPlace> _carPlacesInQueue;
 
-        public event Action NewPlaceUnlocked;
+        public event Action UnlockedNewPlace;
 
         public int UnlockedPlacesCount =>
             _carPlacesInQueue == null ? 0 : _carPlacesInQueue.Count(place => !place.IsLocked);
@@ -34,7 +34,7 @@ namespace Scripts.Cars.CarPlaces
                 throw new NullReferenceException(nameof(_showRewardPanel));
         }
 
-        public void StartLevel()
+        public void Load()
         {
             _carPlacesInQueue = new List<CarPlace>();
             Quaternion rotationQuaternion = Quaternion.Euler(0, _degriesRotation, 0);
@@ -43,7 +43,7 @@ namespace Scripts.Cars.CarPlaces
             {
                 Vector3 newPosition = transform.position + new Vector3(0f, 0f, _offset * i);
                 CarPlace place = Instantiate(_carPlacePrefab, newPosition, rotationQuaternion, transform);
-                place.Unlocked += PlaceUnlock;
+                place.Unlocked += UnlockPlace;
                 _carPlacesInQueue.Add(place);
 
                 place.Initialize(i >= _freeCount, _showRewardPanel, i);
@@ -54,7 +54,7 @@ namespace Scripts.Cars.CarPlaces
         {
             foreach (CarPlace place in _carPlacesInQueue)
             {
-                place.Unlocked -= PlaceUnlock;
+                place.Unlocked -= UnlockPlace;
                 Destroy(place.gameObject);
             }
 
@@ -66,9 +66,9 @@ namespace Scripts.Cars.CarPlaces
             return _carPlacesInQueue.FirstOrDefault(place => place.IsFree && !place.IsLocked);
         }
 
-        private void PlaceUnlock()
+        private void UnlockPlace()
         {
-            NewPlaceUnlocked?.Invoke();
+            UnlockedNewPlace?.Invoke();
         }
     }
 }

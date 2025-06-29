@@ -37,7 +37,7 @@ namespace Scripts.Progress
             _parking.CarLeft -= CarLeftParking;
         }
 
-        public void StartLevel(int points, CarList carList)
+        public void Load(int points, CarList carList)
         {
             _lastSeatsCount = points;
             _totalSeatsCount = points;
@@ -49,14 +49,7 @@ namespace Scripts.Progress
             CurrentPercentChanged?.Invoke(_currentPercent);
         }
 
-        public void AddTotalPoints()
-        {
-            _lastSeatsCount++;
-            _totalSeatsCount++;
-            _occupiedSeatsCount++;
-        }
-
-        public void FinishLevel()
+        public void Unload()
         {
             _lastSeatsCount = 0;
             _totalSeatsCount = 0;

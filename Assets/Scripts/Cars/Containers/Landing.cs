@@ -19,12 +19,12 @@ namespace Scripts.Cars.Containers
                 throw new NullReferenceException(nameof(_parking));
         }
 
-        public void StartLevel(CarList carList)
+        public void Load(CarList carList)
         {
-            _animalQueue.StartLevel();
-            _parking.StartLevel(carList);
+            _animalQueue.Load();
+            _parking.Load(carList);
 
-            _parking.CarWasParked += ParkedCarInQueue;
+            _parking.CarWasParked += ParkCarInQueue;
         }
 
         public void Unload()
@@ -32,10 +32,10 @@ namespace Scripts.Cars.Containers
             _animalQueue.Unload();
             _parking.Unload();
 
-            _parking.CarWasParked -= ParkedCarInQueue;
+            _parking.CarWasParked -= ParkCarInQueue;
         }
 
-        private void ParkedCarInQueue(CarWithSeats car)
+        private void ParkCarInQueue(CarWithSeats car)
         {
             if (car == null)
                 throw new NullReferenceException(nameof(car));

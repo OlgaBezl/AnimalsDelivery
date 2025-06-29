@@ -24,15 +24,15 @@ namespace Scripts.UI
 
         private void OnEnable()
         {
-            _result.CurrentPercentChanged += ResultChanged;
+            _result.CurrentPercentChanged += ChangeResult;
         }
 
         private void OnDisable()
         {
-            _result.CurrentPercentChanged -= ResultChanged;
+            _result.CurrentPercentChanged -= ChangeResult;
         }
 
-        private void ResultChanged(int percent)
+        private void ChangeResult(int percent)
         {
             _slider.value = percent;
             _text.text = $"{percent}%";
